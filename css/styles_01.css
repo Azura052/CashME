@@ -1,0 +1,82 @@
+:root{
+    --azul: rgb(48, 46, 151);
+    --negro: #000000;
+    --blanco: #fff0d3;
+    --rojo: rgb(224, 0, 0);
+    --naranja: #f7590f;
+    --rojo: #d62424;
+    --verde: #5ddd51;
+}
+
+body {
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    background-color: var(--blanco);
+    padding: 0rem;
+}
+
+header {
+    color: var(--blanco);
+    font-size: 2.5rem;
+}
+
+.sombras:hover{
+    background-color: var(--azul);
+}
+
+.nav-wrapper {
+    background-color: var(--naranja);
+}
+
+.brand-logo{
+    margin: 0px 30px;
+}
+
+#cierre:hover{
+    background-color: var(--rojo);
+}
+
+#tabla-resumen{
+    padding: 3rem;
+}
+
+.texto{
+    font-size: 1.5rem;
+}
+
+.headings{
+    margin: 20px 0; /* Márgenes superior e inferior */
+    padding: 10px; /* Espaciado interno */
+    border-left: 5px solid #FF5722; /* Línea decorativa a la izquierda */
+    background-color: #f9f9f9; /* Fondo suave */
+    color: #333; /* Color del texto */
+    font-weight: bold; /* Negrita para resaltar */
+    border-radius: 5px; /* Esquinas redondeadas */
+}
+
+
+.botones-reporte {
+    display: flex;
+    gap: 10px; /* Espaciado entre los botones */
+    margin-top: 20px; /* Margen superior para separarlos de otros elementos */
+}
+
+.boton-reporte {
+    background-color: #FF5722; /* Color naranja */
+    color: white; /* Color del texto */
+    border: 2px solid transparent; /* Borde inicial transparente */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de la fuente */
+    font-weight: bold; /* Negrita */
+    cursor: pointer; /* Cursor de mano */
+    transition: all 0.3s ease; /* Transición suave para hover */
+}
+
+.boton-reporte:hover {
+    background-color: white; /* Fondo blanco al pasar el cursor */
+    color: #FF5722; /* Texto naranja */
+    border: 2px solid #FF5722; /* Borde naranja */
+}
