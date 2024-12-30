@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- Links para aplicar css -->
+    <!-- Links para aplicar css basicos-->
     <link rel="preload" href="css/styles_01.css" as="style">
     <link href="css/styles_01.css" rel="stylesheet">
 </head>
@@ -32,8 +32,8 @@
                 <path d="M16 4v3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342c-.336 .95 -.907 1.8 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3h0z"></path>
               </svg></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a class="sombras" href="badges.html">Resumen</a></li>
-            <li><a class="sombras" href="sass.html">Ingresos</a></li>
+            <li><a class="sombras" href="index.php">Resumen</a></li>
+            <li><a class="sombras" href="ingresos.php">Ingresos</a></li>
             <li><a class="sombras" href="badges.html">Gastos</a></li>
             <li><a class="sombras" href="collapsible.html">Deudas</a></li>
             <li><a class="sombras" href="badges.html">Ahorros</a></li>
@@ -47,7 +47,6 @@
         <br> 
             <div class="texto">
                 <h5 class="center-align">Resumen</h5>
-                <p>¿Quieres conocer los movimientos de tu cuenta este mes? Genera un reporte detallado y revisa toda tu actividad de forma fácil y rápida.</p>
             </div>
             <div class="botones-reporte">
             <button class="boton-reporte">Reporte Mensual <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
