@@ -77,13 +77,13 @@ header {
     font-size: 16px; 
     font-weight: bold;
     cursor: pointer; /* Cursor de mano */
-    transition: all 0.3s ease; /* Transición suave para hover */
+    transition: all 0.3s ease;
 }
 
 .boton-reporte:hover {
-    background-color: var(--blanco); /* Fondo blanco al pasar el cursor */
-    color: var(--nar6); /* Texto naranja */
-    border: 2px solid var(--nar7); /* Borde naranja */
+    background-color: var(--blanco); 
+    color: var(--nar6); 
+    border: 2px solid var(--nar7); 
 }
 
 h5.center-align {
@@ -131,14 +131,14 @@ button {
 
 button.save, 
 button.clear {
-    display: flex; /* Convierte el botón en un contenedor flex */
-    align-items: center; /* Alinea verticalmente al centro */
-    justify-content: center; /* Alinea horizontalmente al centro */
-    padding: 10px; /* Espaciado interno */
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 10px; 
     font-size: 1.2rem;
     border-radius: 10px;
     cursor: pointer;
-    border: none; /* Sin borde inicial */
+    border: none; 
     text-align: center;
 }
 

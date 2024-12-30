@@ -4,6 +4,12 @@
    if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error);
 }
+    // Obtener el saldo de ingresos del usuario
+    $usuario_id = 3; // Reemplaza con el ID del usuario actual
+    $query_saldo = "SELECT SUM(IngresoMonto) as ingresoSaldo FROM Ingreso WHERE usuario_idUsuario = $usuario_id";
+    $result_saldo = mysqli_query($conexion, $query_saldo);
+    $row_saldo = mysqli_fetch_assoc($result_saldo);
+    $ingresoSaldo = $row_saldo['ingresoSaldo'];
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +48,6 @@
             </ul>
         </div>
     </nav>
-
     
     <section id="tabla-resumen">
         <div>
@@ -72,11 +77,12 @@
                         </div>
                     </form>
                 </div>
+            </div>
         <br>
         <br>
         <br> <!--Tabla Ingresos-->
         <div>
-            <h5 class="left-align headings">Ingresos</h5>
+            <h5 class="left-align headings">Ingresos  - Saldo: <?php echo $ingresoSaldo; ?></h5>
         </div>
             <table class="highlight responsive-table">
                 <tr>
@@ -103,8 +109,25 @@
         </div>
     </section>
 
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $IngresoDesc = $_POST['IngresoDesc'];
+        $IngresoMonto = $_POST['IngresoMonto'];
+        $IngresoFecha = $_POST['IngresoFecha'];
+
+        $sql = "INSERT INTO Ingreso (IngresoDesc, IngresoMonto, IngresoFecha, usuario_idUsuario) 
+                VALUES ('$IngresoDesc', '$IngresoMonto', '$IngresoFecha', 3)";
+
+        if (mysqli_query($conexion, $sql)) {
+            echo "<p style='color: green;'>Datos guardados con éxito.</p>";
+        } else {
+            echo "<p style='color: red;'>Error al guardar los datos: " . mysqli_error($conexion) . "</p>";
+        }
+    }
+    ?>
+
       <!-- Incluir el archivo externo -->
-        <script src="scripts.js"></script>
+        <script src="javascript/script_01.js"></script>
 
 
     <footer>
