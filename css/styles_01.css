@@ -1,10 +1,16 @@
 :root{
     --azul: rgb(48, 46, 151);
     --negro: #000000;
-    --blanco: #fff0d3;
+    --gris: #363434;
+    --blanco: #fefefe;
+    --nar1: #fff0d3;
+    --nar2: #ffccbc;
+    --nar3: #ffab91;
+    --nar4: #ff8a65;
+    --nar5: #ff7043;
+    --nar6: #ff5722;
+    --nar7: #f7590f;
     --rojo: rgb(224, 0, 0);
-    --naranja: #f7590f;
-    --rojo: #d62424;
     --verde: #5ddd51;
 }
 
@@ -13,21 +19,21 @@ body {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    background-color: var(--blanco);
+    background-color: var(--nar1);
     padding: 0rem;
 }
 
 header {
-    color: var(--blanco);
+    color: var(--nar1);
     font-size: 2.5rem;
 }
 
 .sombras:hover{
-    background-color: var(--azul);
+    background-color: var(--nar5);
 }
 
 .nav-wrapper {
-    background-color: var(--naranja);
+    background-color: var(--nar7);
 }
 
 .brand-logo{
@@ -47,36 +53,45 @@ header {
 }
 
 .headings{
-    margin: 20px 0; /* Márgenes superior e inferior */
-    padding: 10px; /* Espaciado interno */
-    border-left: 5px solid #FF5722; /* Línea decorativa a la izquierda */
-    background-color: #f9f9f9; /* Fondo suave */
-    color: #333; /* Color del texto */
-    font-weight: bold; /* Negrita para resaltar */
-    border-radius: 5px; /* Esquinas redondeadas */
+    margin: 20px 0; 
+    padding: 10px; 
+    border-left: 5px solid var(--nar6); /* Línea decorativa a la izquierda */
+    background-color: var(--blanco); 
+    color: var(--gris); 
+    font-weight: bold; 
+    border-radius: 5px; 
 }
-
 
 .botones-reporte {
     display: flex;
-    gap: 10px; /* Espaciado entre los botones */
-    margin-top: 20px; /* Margen superior para separarlos de otros elementos */
+    gap: 10px; 
+    margin-top: 20px; 
 }
 
 .boton-reporte {
-    background-color: #FF5722; /* Color naranja */
-    color: white; /* Color del texto */
-    border: 2px solid transparent; /* Borde inicial transparente */
-    border-radius: 5px; /* Esquinas redondeadas */
-    padding: 10px 20px; /* Espaciado interno */
-    font-size: 16px; /* Tamaño de la fuente */
-    font-weight: bold; /* Negrita */
+    background-color: var(--nar6); 
+    color: var(--blanco); 
+    border: 2px solid transparent;
+    border-radius: 5px; 
+    padding: 10px 20px;
+    font-size: 16px; 
+    font-weight: bold;
     cursor: pointer; /* Cursor de mano */
     transition: all 0.3s ease; /* Transición suave para hover */
 }
 
 .boton-reporte:hover {
-    background-color: white; /* Fondo blanco al pasar el cursor */
-    color: #FF5722; /* Texto naranja */
-    border: 2px solid #FF5722; /* Borde naranja */
+    background-color: var(--blanco); /* Fondo blanco al pasar el cursor */
+    color: var(--nar6); /* Texto naranja */
+    border: 2px solid var(--nar7); /* Borde naranja */
 }
+
+h5.center-align {
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--nar4); /* Un tono naranja vibrante */
+    border-bottom: 3px solid var(--nar5); /* Línea decorativa debajo */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
