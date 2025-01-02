@@ -127,7 +127,7 @@
     ?>
 
       <!-- Incluir el archivo externo -->
-        <script src="javascript/script_01.js"></script>
+        <script src="javascript/script_02.js"></script>
 
 
     <footer>

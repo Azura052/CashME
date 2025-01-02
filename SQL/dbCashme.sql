@@ -18,7 +18,7 @@ USE `dbCashme` ;
 -- Table `dbCashme`.`usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbCashme`.`usuario` (
-  `idUsuario` INT NOT NULL,
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
   `usuarioNom` VARCHAR(45) NULL,
   `usuarioApePat` VARCHAR(30) NULL,
   `usuarioApeMat` VARCHAR(30) NULL,
@@ -36,7 +36,7 @@ ENGINE = InnoDB;
 -- Table `dbCashme`.`usuarioDir`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbCashme`.`usuarioDir` (
-  `idusuarioDir` INT NOT NULL,
+  `idusuarioDir` INT NOT NULL AUTO_INCREMENT,
   `usuarioDireccionEstado` VARCHAR(45) NULL,
   `usuarioDireccionCP` VARCHAR(45) NULL,
   `usuarioDireccioncol` VARCHAR(45) NULL,
@@ -56,7 +56,7 @@ ENGINE = InnoDB;
 -- Table `dbCashme`.`Admin`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbCashme`.`Admin` (
-  `idAdmin` INT NOT NULL,
+  `idAdmin` INT NOT NULL AUTO_INCREMENT,
   `AdminUser` VARCHAR(45) NULL,
   `AdminContra` VARCHAR(45) NULL,
   PRIMARY KEY (`idAdmin`))
@@ -143,55 +143,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
--- Inserción de datos en la tabla `usuario`
-INSERT INTO `dbCashme`.`usuario` (`idUsuario`, `usuarioNom`, `usuarioApePat`, `usuarioApeMat`, `usuarioTel`, `usuarioEmail`, `usuarioContra`, `ingresoSaldo`, `ahorroSaldo`, `deudaSaldo`) VALUES
-(1, 'Juan', 'Perez', 'Gomez', '5551234567', 'juan.perez@example.com', 'password123', 10000, 5000, 2000),
-(2, 'Maria', 'Lopez', 'Martinez', '5559876543', 'maria.lopez@example.com', 'password456', 8000, 3000, 1000),
-(3, 'Carlos', 'Hernandez', 'Diaz', '5551122334', 'carlos.hernandez@example.com', 'password789', 15000, 7000, 5000),
-(4, 'Ana', 'Garcia', 'Ruiz', '5555566778', 'ana.garcia@example.com', 'password101', 12000, 4000, 3000),
-(5, 'Luis', 'Martinez', 'Vega', '5554455667', 'luis.martinez@example.com', 'password202', 9000, 2500, 1500);
-
--- Inserción de datos en la tabla `usuarioDir`
-INSERT INTO `dbCashme`.`usuarioDir` (`idusuarioDir`, `usuarioDireccionEstado`, `usuarioDireccionCP`, `usuarioDireccioncol`, `usuarioDireccionCalle`, `usuario_idUsuario`) VALUES
-(1, 'Ciudad de Mexico', '01000', 'Centro', 'Calle 1', 1),
-(2, 'Estado de Mexico', '02000', 'Norte', 'Calle 2', 2),
-(3, 'Puebla', '03000', 'Este', 'Calle 3', 3),
-(4, 'Jalisco', '04000', 'Oeste', 'Calle 4', 4),
-(5, 'Nuevo Leon', '05000', 'Sur', 'Calle 5', 5);
-
--- Inserción de datos en la tabla `Admin`
-INSERT INTO `dbCashme`.`Admin` (`idAdmin`, `AdminUser`, `AdminContra`) VALUES
-(1, 'admin', 'adminpass');
-
--- Inserción de datos en la tabla `Ingreso`
-INSERT INTO `dbCashme`.`Ingreso` (`idIngreso`, `IngresoDesc`, `IngresoMonto`, `IngresoFecha`, `usuario_idUsuario`) VALUES
-(1, 'Salario', 10000, '2024-12-01', 1),
-(2, 'Freelance', 5000, '2024-12-02', 2),
-(3, 'Bonificación', 7000, '2024-12-03', 3),
-(4, 'Venta', 2000, '2024-12-04', 4),
-(5, 'Intereses', 3000, '2024-12-05', 5);
-
--- Inserción de datos en la tabla `Ahorro`
-INSERT INTO `dbCashme`.`Ahorro` (`idAhorro`, `AhorroDesc`, `AhorroMonto`, `AhorroFecha`, `usuario_idUsuario`) VALUES
-(1, 'Meta de viaje', 2000, '2024-12-01', 1),
-(2, 'Emergencias', 3000, '2024-12-02', 2),
-(3, 'Fondo retiro', 5000, '2024-12-03', 3),
-(4, 'Educación', 4000, '2024-12-04', 4),
-(5, 'Inversiones', 2500, '2024-12-05', 5);
-
--- Inserción de datos en la tabla `Gasto`
-INSERT INTO `dbCashme`.`Gasto` (`idGasto`, `GastoDesc`, `GastoMonto`, `GastoFecha`, `GastoCobro`, `usuario_idUsuario`) VALUES
-(1, 'Renta', 5000, '2024-12-01', 'Tarjeta', 1),
-(2, 'Supermercado', 2000, '2024-12-02', 'Efectivo', 2),
-(3, 'Transporte', 1500, '2024-12-03', 'Tarjeta', 3),
-(4, 'Ropa', 3000, '2024-12-04', 'Tarjeta', 4),
-(5, 'Servicios', 2500, '2024-12-05', 'Efectivo', 5);
-
--- Inserción de datos en la tabla `Deuda`
-INSERT INTO `dbCashme`.`Deuda` (`idDeuda`, `DeudaDesc`, `DeudaMonto`, `DeudaFecha`, `usuario_idUsuario`) VALUES
-(1, 'Crédito hipotecario', 2000, '2024-12-01', 1),
-(2, 'Crédito automotriz', 1000, '2024-12-02', 2),
-(3, 'Tarjeta crédito', 5000, '2024-12-03', 3),
-(4, 'Préstamo personal', 3000, '2024-12-04', 4),
-(5, 'Educativo', 1500, '2024-12-05', 5);

@@ -17,8 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $colonia = $_POST['colonia'];
     $calle = $_POST['calle'];
 
-        
-
         // Insertar en la tabla usuario
         $sqlUsuario = "INSERT INTO usuario (usuarioNom, usuarioApePat, usuarioApeMat, usuarioTel, usuarioEmail, usuarioContra, ingresoSaldo, ahorroSaldo, deudaSaldo) 
                         VALUES ('$nombre', '$apellidoPaterno', '$apellidoMaterno', '$telefono', '$email', '$password', 0, 0, 0)";
@@ -27,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $last_id = $conexion->insert_id;
 
             // Insertar en la tabla usuarioDireccion
-            $sqlDireccion = "INSERT INTO usuarioDireccion (usuarioDireccionEstado, usuarioDireccionCP, usuarioDireccioncol, usuarioDireccionCalle, usuario_idUsuario) 
+            $sqlDireccion = "INSERT INTO usuarioDir (usuarioDireccionEstado, usuarioDireccionCP, usuarioDireccioncol, usuarioDireccionCalle, usuario_idUsuario) 
                                 VALUES ('$estado', '$codigoPostal', '$colonia', '$calle', '$last_id')";
 
             if ($conexion->query($sqlDireccion) === TRUE) {
@@ -168,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <script src="javascript/script_02.js"></script>
+    <script src="javascript/script_01.js"></script>
 
     <footer class="footer">
         <div class="footer-container">
