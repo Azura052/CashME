@@ -95,3 +95,62 @@ h5.center-align {
     padding-bottom: 10px;
     margin-bottom: 20px;
   }
+
+/* Footer */
+.footer {
+    background-color: var(--nar5);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-image {
+    width: 150px;
+    height: auto;
+}
+
+.footer-contact {
+    color: var(--blanco);
+    text-align: right;
+    font-family: Arial, sans-serif;
+}
+
+.footer-contact p {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+footer p {
+    color: var(--blanco);
+}
+
+.footer-contact a {
+    color: var(--blanco);
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-contact {
+        text-align: center;
+    }
+}

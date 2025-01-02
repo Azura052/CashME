@@ -17,11 +17,11 @@
         die("Conexión fallida: " . $conexion->connect_error);
     }
 
-    // Obtener el saldo de ingresos del usuario
-    $query_saldo = "SELECT SUM(IngresoMonto) as ingresoSaldo FROM Ingreso WHERE usuario_idUsuario = $usuario_id";
+    // Obtener el saldo de ahorros del usuario
+    $query_saldo = "SELECT SUM(AhorroMonto) as ahorroSaldo FROM Ahorro WHERE usuario_idUsuario = $usuario_id";
     $result_saldo = mysqli_query($conexion, $query_saldo);
     $row_saldo = mysqli_fetch_assoc($result_saldo);
-    $ingresoSaldo = $row_saldo['ingresoSaldo'];
+    $ahorroSaldo = $row_saldo['ahorroSaldo'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,17 +63,17 @@
     <section id="tabla-resumen">
         <div>
             <div class="texto">
-                <h5 class="center-align">Ingresos</h5>
+                <h5 class="center-align">Ahorros</h5>
                 <div>
                     <form method="POST" action="">
-                        <label for="IngresoDesc">Descripción del Ingreso</label>
-                        <input type="text" class="ingresar" id="IngresoDesc" name="IngresoDesc" required>
+                        <label for="AhorroDesc">Descripción del Ahorro</label>
+                        <input type="text" class="ingresar" id="AhorroDesc" name="AhorroDesc" required>
 
-                        <label for="IngresoMonto">Monto del Ingreso</label>
-                        <input type="number" class="ingresar" id="IngresoMonto" name="IngresoMonto" required>
+                        <label for="AhorroMonto">Monto del Ahorro</label>
+                        <input type="number" class="ingresar" id="AhorroMonto" name="AhorroMonto" required>
 
-                        <label for="IngresoFecha">Fecha del Ingreso</label>
-                        <input type="date" class="ingresar" id="IngresoFecha" name="IngresoFecha" required>
+                        <label for="AhorroFecha">Fecha del Ahorro</label>
+                        <input type="date" class="ingresar" id="AhorroFecha" name="AhorroFecha" required>
 
                         <div>
                         <button type="button" class="clear" onclick="limpiarFormulario()">Limpiar <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1">
@@ -91,9 +91,9 @@
             </div>
         <br>
         <br>
-        <br> <!--Tabla Ingresos-->
+        <br> <!--Tabla Ahorros-->
         <div>
-            <h5 class="left-align headings">Ingresos  - Saldo: <?php echo $ingresoSaldo; ?></h5>
+            <h5 class="left-align headings">Ahorros  - Saldo: <?php echo $ahorroSaldo; ?></h5>
         </div>
             <table class="highlight responsive-table">
                 <tr>
@@ -102,15 +102,15 @@
                     <td><b>Fecha</b></td>
                 <tr>
         <?php
-            $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id'"; 
+            $consulta = "SELECT * FROM ahorro WHERE usuario_idUsuario = '$usuario_id'"; 
             $resultado = mysqli_query($conexion, $consulta);
             
             while($mostrar = mysqli_fetch_array($resultado)) {
         ?>
                 <tr>
-                    <td><?php echo $mostrar['IngresoDesc']; ?></td>
-                    <td><?php echo $mostrar['IngresoMonto']; ?></td>
-                    <td><?php echo $mostrar['IngresoFecha']; ?></td>
+                    <td><?php echo $mostrar['AhorroDesc']; ?></td>
+                    <td><?php echo $mostrar['AhorroMonto']; ?></td>
+                    <td><?php echo $mostrar['AhorroFecha']; ?></td>
                 </tr>
         <?php
             }            
@@ -120,31 +120,26 @@
     </section>
 
     <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Escapar y validar los datos recibidos
-            $IngresoDesc = mysqli_real_escape_string($conexion, $_POST['IngresoDesc']);
-            $IngresoMonto = $_POST['IngresoMonto'];
-            $IngresoFecha = $_POST['IngresoFecha'];
-        
-            // Validar que el monto sea positivo y numérico
-            if (!is_numeric($IngresoMonto) || $IngresoMonto <= 0) {
-                die("<p style='color: red;'>El monto debe ser un número positivo.</p>");
-            }
-        
-            // Inserción en la tabla de ingresos
-            $sql = "INSERT INTO Ingreso (IngresoDesc, IngresoMonto, IngresoFecha, usuario_idUsuario) 
-                    VALUES ('$IngresoDesc', '$IngresoMonto', '$IngresoFecha', '$usuario_id')";
-        
-            // Ejecutar la consulta e informar al usuario
-            if (mysqli_query($conexion, $sql)) {
-                echo "<script>window.location.href='ingresos.php';</script>";
-                exit();
-            } else {
-                echo "<p style='color: red;'>Error al guardar los datos: " . mysqli_error($conexion) . "</p>";
-            }
-        }    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $AhorroDesc = mysqli_real_escape_string($conexion, $_POST['AhorroDesc']);
+        $AhorroMonto = $_POST['AhorroMonto'];
+        $AhorroFecha = $_POST['AhorroFecha'];
+    
+        if (!is_numeric($AhorroMonto) || $AhorroMonto <= 0) {
+            die("<p style='color: red;'>El monto debe ser un número positivo.</p>");
+        }
+    
+        $sql = "INSERT INTO Ahorro (AhorroDesc, AhorroMonto, AhorroFecha, usuario_idUsuario) 
+                VALUES ('$AhorroDesc', '$AhorroMonto', '$AhorroFecha', '$usuario_id')";
+    
+        if (mysqli_query($conexion, $sql)) {
+            echo "<script>window.location.href='ahorros.php';</script>";
+            exit();
+        } else {
+            echo "<p style='color: red;'>Error al guardar los datos: " . mysqli_error($conexion) . "</p>";
+        }
+    }    
     ?>
-
 
       <!-- Incluir el archivo externo -->
         <script src="javascript/script_02.js"></script>
@@ -161,7 +156,7 @@
                 .then(response => response.text())
                 .then(data => {
                     // Recarga la página después de una inserción exitosa
-                    window.location.href = 'ingresos.php';
+                    window.location.href = 'ahorros.php';
                 })
                 .catch(error => console.error('Error:', error));
             });

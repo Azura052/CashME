@@ -1,6 +1,5 @@
 <?php
-session_start();
-
+    session_start();
 // Configuración de la base de datos
 $db_host = 'localhost';
 $db_user = 'root';  // Usuario por defecto de XAMPP
@@ -33,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Usuario encontrado - Iniciar sesión
                 $_SESSION['user_id'] = $user['idUsuario'];
                 $_SESSION['user_name'] = $user['usuarioNom'];
-                
                 // Redirigir al dashboard o página principal
                 header("Location: resumen.php");
                 exit();
