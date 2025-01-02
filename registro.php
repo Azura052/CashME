@@ -29,7 +29,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 VALUES ('$estado', '$codigoPostal', '$colonia', '$calle', '$last_id')";
 
             if ($conexion->query($sqlDireccion) === TRUE) {
-                echo "Registro exitoso";
+                echo "<script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var modal = document.createElement('div');
+                            modal.innerHTML = `
+                                <div id='successModal' class='modal'>
+                                    <div class='modal-content'>
+                                        <h4>Registro exitoso</h4>
+                                        <p>Los datos han sido guardados correctamente.</p>
+                                    </div>
+                                    <div class='modal-footer'>
+                                        <a href='#!' class='modal-close waves-effect waves-green btn-flat'>Aceptar</a>
+                                    </div>
+                                </div>
+                            `;
+                            document.body.appendChild(modal);
+                            var instance = M.Modal.init(document.getElementById('successModal'));
+                            instance.open();
+                            document.querySelector('.modal-close').addEventListener('click', function() {
+                                window.location.href = 'otra_pagina.php';
+                            });
+                        });
+                    </script>";
             } else {
                 echo "Error: " . $sqlDireccion . "<br>" . $conexion->error;
             }
@@ -67,8 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <path d="M16 4v3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342c-.336 .95 -.907 1.8 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3h0z"></path>
                   </svg></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="sombras" href="index.html">Inicio</a></li>
                 <li><a class="sombras" href="registro.php">Registrarse</a></li>
-                <li><a class="sombras" href="collapsible.html">   Iniciar Sesión</a></li>
+                <li><a class="sombras" href="loginUsuario.php">   Iniciar Sesión</a></li>
                 </ul>
             </div>
         </nav>
@@ -175,9 +197,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="footer-contact">
                 <p>¿Necesitas ayuda?</p>
-                <p><a href="mailto:ayuda@gmail.com">Contáctanos: contactoCashME@gmail.com</a></p>
+                <p>Contáctanos: contactoCashME@gmail.com</p>
             </div>
             <p>&copy; 2024-2025 CashME. Todos los derechos reservados.</p>
+            <p><a href="loginAdmin.php" class="admin-link">¿Eres Administrador?</a></p>
         </div>
     </footer>
 </body>

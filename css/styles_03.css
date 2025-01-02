@@ -255,3 +255,12 @@ footer p {
         text-align: center;
     }
 }
+
+.admin-link{
+    color: var(--blanco);
+}
+
+.admin-link:hover {
+    text-decoration: underline;
+    color: var(--azul2); /* Color al pasar el ratón */
+}
