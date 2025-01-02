@@ -44,7 +44,7 @@
             <li><a class="sombras" href="badges.html">Gastos</a></li>
             <li><a class="sombras" href="collapsible.html">Deudas</a></li>
             <li><a class="sombras" href="badges.html">Ahorros</a></li>
-            <li><a id="cierre" href="collapsible.html">   Cerrar Sesión</a></li>
+            <li><a id="cierre" href="collapsible.html">   Iniciar Sesión</a></li>
             </ul>
         </div>
     </nav>
