@@ -131,35 +131,3 @@ function limpiarFormulario() {
     });
     showTab('personal');
 }
-
-// Manejar envío del formulario
-/*document.getElementById('registroForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    
-    try {
-        const response = await fetch(window.location.href, {
-            method: 'POST',
-            body: formData
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            alert('Usuario registrado exitosamente');
-            limpiarFormulario();
-        } else {
-            alert('Error al registrar usuario: ' + result.error);
-        }
-    } catch (error) {
-        alert('Error al procesar la solicitud');
-        console.error('Error:', error);
-    }
-});
-
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        switchTab(tab.dataset.tab);
-    });
-});*/
