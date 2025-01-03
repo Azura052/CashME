@@ -63,7 +63,19 @@
     <section id="tabla-resumen">
         <div>
             <div class="texto">
-                <h5 class="center-align">Ahorros</h5>
+                <h5 class="center-align">Ahorros <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="45" height="45" stroke-width="1">
+                <path d="M5 3v18"></path>
+                <path d="M19 21v-18"></path>
+                <path d="M5 7h14"></path>
+                <path d="M5 15h14"></path>
+                <path d="M8 13v4"></path>
+                <path d="M11 13v4"></path>
+                <path d="M16 13v4"></path>
+                <path d="M14 5v4"></path>
+                <path d="M11 5v4"></path>
+                <path d="M8 5v4"></path>
+                <path d="M3 21h18"></path>
+                </svg></h5>
                 <div>
                     <form method="POST" action="">
                         <label for="AhorroDesc">Descripción del Ahorro</label>
