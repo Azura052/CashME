@@ -90,11 +90,11 @@
                 <p>Si deseas conocer sobre tus movimientos de este mes, puedes consultarlos generando un resumen.</p>
             </div>
             <div class="botones-reporte">
-            <button class="boton-reporte">Reporte Mensual <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
+            <button class="boton-reporte" onclick="window.location.href='generarReporteMensual.php'">Reporte Mensual <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1"> 
             <path d="M12 20h-6a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12v5"></path> <path d="M13 16h-7a2 2 0 0 0 -2 2"></path> 
             <path d="M15 19l3 3l3 -3"></path> <path d="M18 22v-9"></path> </svg> </button>
-            <button class="boton-reporte">Reporte Quincenal <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
+            <button class="boton-reporte" onclick="window.location.href='generarReporteQuincenal.php'">Reporte Quincenal <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
             stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1"> 
             <path d="M12 20h-6a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12v5"></path> <path d="M13 16h-7a2 2 0 0 0 -2 2"></path> 
             <path d="M15 19l3 3l3 -3"></path> <path d="M18 22v-9"></path></svg> </button>
