@@ -92,7 +92,7 @@
                     <td><b>Monto (MXN)</b></td>
                     <td><b>Fecha</b></td>
                 <tr>
-        <?php
+                    <?php
             $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'"; 
             $resultado = mysqli_query($conexion, $consulta);
             
@@ -103,13 +103,16 @@
                     <td><?php echo $mostrar['DeudaMonto']; ?></td>
                     <td><?php echo $mostrar['DeudaFecha']; ?></td>
                 </tr>
-        <?php
+                <?php
             }            
-        ?>
+            ?>
             </table>
         </div>
+        <!--Botones para modificar y eliminar deudas-->
+        <button type="button" class="edit">Edit</button>
+        <button type="button" class="eliminar">Eliminar</button>
     </section>
-
+    
     <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Escapar y validar los datos recibidos
@@ -134,7 +137,7 @@
                 echo "<p style='color: red;'>Error al guardar los datos: " . mysqli_error($conexion) . "</p>";
             }
         }    
-    ?>
+        ?>
 
     <!-- Incluir el archivo externo -->
     <script src="javascript/script_02.js"></script>
@@ -157,6 +160,7 @@
             });
         </script>
 
+        <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
