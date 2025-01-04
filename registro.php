@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             var instance = M.Modal.init(document.getElementById('successModal'));
                             instance.open();
                             document.querySelector('.modal-close').addEventListener('click', function() {
-                                window.location.href = 'otra_pagina.php';
+                                window.location.href = 'loginUsuario.php';
                             });
                         });
                     </script>";
