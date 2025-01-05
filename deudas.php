@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Links para usar google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">     
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Links para aplicar css específicos para esta pestaña-->
@@ -102,15 +102,16 @@
                     <td><?php echo $mostrar['DeudaDesc']; ?></td>
                     <td><?php echo $mostrar['DeudaMonto']; ?></td>
                     <td><?php echo $mostrar['DeudaFecha']; ?></td>
+
                 </tr>
                 <?php
             }            
             ?>
             </table>
+            <!--Botones para modificar y eliminar deudas-->
+            <button id="editarFilas" type="button">Editar Filas</button>
+            <button type="button" class="eliminate">Eliminar</button>
         </div>
-        <!--Botones para modificar y eliminar deudas-->
-        <button type="button" class="edit">Edit</button>
-        <button type="button" class="eliminar">Eliminar</button>
     </section>
     
     <?php
@@ -161,6 +162,7 @@
         </script>
 
         <!-- FOOTER -->
+    <br>
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
