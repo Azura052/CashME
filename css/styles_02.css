@@ -160,7 +160,7 @@ button.eliminate{
     color: var(--negro);
 }
 
-button.eliminate    :hover {
+button.eliminate:hover {
     background-color: var(--blanco);
     color: var(--negro);
     border: 2px solid var(--negro); 

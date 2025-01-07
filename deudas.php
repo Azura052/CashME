@@ -82,35 +82,43 @@
             </div>
         <br>
         <br>
-        <br> <!-- Tabla Deudas -->
-        <div>
+        <br>
+        <!-- Tabla Deudas -->
+                <div>
             <h5 class="left-align headings">Deudas - Saldo: <?php echo $deudaSaldo; ?></h5>
         </div>
-            <table class="highlight responsive-table">
+        <table id="tablaDeudas" class="highlight responsive-table">
+            <thead>
                 <tr>
                     <td><b>Descripción</b></td>
                     <td><b>Monto (MXN)</b></td>
                     <td><b>Fecha</b></td>
-                <tr>
-                    <?php
-            $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'"; 
-            $resultado = mysqli_query($conexion, $consulta);
-            
-            while($mostrar = mysqli_fetch_array($resultado)) {
-        ?>
-                <tr>
-                    <td><?php echo $mostrar['DeudaDesc']; ?></td>
-                    <td><?php echo $mostrar['DeudaMonto']; ?></td>
-                    <td><?php echo $mostrar['DeudaFecha']; ?></td>
-
+                    <td><b>Acciones</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'"; 
+                $resultado = mysqli_query($conexion, $consulta);
+                while ($mostrar = mysqli_fetch_array($resultado)) {
+                ?>
+                <tr data-id="<?php echo $mostrar['idDeuda']; ?>">
+                    <td class="desc" contenteditable="false"><?php echo $mostrar['DeudaDesc']; ?></td>
+                    <td class="monto" contenteditable="false"><?php echo $mostrar['DeudaMonto']; ?></td>
+                    <td class="fecha" contenteditable="false"><?php echo $mostrar['DeudaFecha']; ?></td>
+                    <td>
+                        <button class="eliminar" type="button">Eliminar</button>
+                    </td>
                 </tr>
                 <?php
-            }            
-            ?>
-            </table>
-            <!--Botones para modificar y eliminar deudas-->
-            <button id="editarFilas" type="button">Editar Filas</button>
-            <button type="button" class="eliminate">Eliminar</button>
+                }            
+                ?>
+            </tbody>
+        </table>
+        <!-- Botones para modificar y eliminar deudas -->
+        <div class="botones">
+            <button id="editar" type="button">Editar</button>
+            <button id="guardar" type="button" style="visibility: hidden;">Guardar cambios</button>
         </div>
     </section>
     
