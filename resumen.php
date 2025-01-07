@@ -103,27 +103,62 @@
         <div>
             <h5 class="left-align headings">Ingresos  - Saldo: <?php echo $ingresoSaldo; ?></h5>
         </div>
-            <table class="highlight responsive-table">
-                <tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                <tr>
-        <?php
-            $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id'"; 
-            $resultado = mysqli_query($conexion, $consulta);
-            
-            while($mostrar = mysqli_fetch_array($resultado)) {
-        ?>
-            <tr>
-                <td><?php echo $mostrar['IngresoDesc']; ?></td>
-                <td><?php echo $mostrar['IngresoMonto']; ?></td>
-                <td><?php echo $mostrar['IngresoFecha']; ?></td>
-            </tr>
-        <?php
-            }
-        ?>
-            </table>
+            <?php
+                // Obtener los ingresos del usuario
+                $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id' ORDER BY IngresoFecha ASC"; 
+                $resultado = mysqli_query($conexion, $consulta);
+
+                $ingresos = [];
+                while($mostrar = mysqli_fetch_array($resultado)) {
+                    $ingresos[] = $mostrar;
+                }
+
+                // Separar los ingresos en periodos de 15 días
+                $periodos = [];
+                $periodo_actual = [];
+                $fecha_inicio = null;
+
+                foreach ($ingresos as $ingreso) {
+                    $fecha_ingreso = new DateTime($ingreso['IngresoFecha']);
+                    if ($fecha_inicio === null) {
+                        $fecha_inicio = $fecha_ingreso;
+                    }
+
+                    $intervalo = $fecha_inicio->diff($fecha_ingreso)->days;
+                    if ($intervalo < 15) {
+                        $periodo_actual[] = $ingreso;
+                    } else {
+                        $periodos[] = $periodo_actual;
+                        $periodo_actual = [$ingreso];
+                        $fecha_inicio = $fecha_ingreso;
+                    }
+                }
+
+                if (!empty($periodo_actual)) {
+                    $periodos[] = $periodo_actual;
+                }
+
+                // Mostrar las tablas de ingresos por periodos de 15 días
+                foreach ($periodos as $index => $periodo) {
+                    echo "<h5 class='left-align headings1'>Quincena " . ($index + 1) . "</h5>";
+                    echo "<table class='highlight responsive-table'>";
+                    echo "<tr>
+                            <td><b>Descripción</b></td>
+                            <td><b>Monto (MXN)</b></td>
+                            <td><b>Fecha</b></td>
+                          </tr>";
+
+                    foreach ($periodo as $ingreso) {
+                        echo "<tr>
+                                <td>{$ingreso['IngresoDesc']}</td>
+                                <td>{$ingreso['IngresoMonto']}</td>
+                                <td>{$ingreso['IngresoFecha']}</td>
+                              </tr>";
+                    }
+
+                    echo "</table><br>";
+                }
+            ?>
         <br> <!--Tabla Gastos-->
         <div>
             <h5 class="left-align headings">Gastos - Saldo: <?php echo $gastoSaldo; ?></h5>
