@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Links para usar google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">     
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Links para aplicar css específicos para esta pestaña-->
@@ -82,34 +82,46 @@
             </div>
         <br>
         <br>
-        <br> <!-- Tabla Deudas -->
-        <div>
+        <br>
+        <!-- Tabla Deudas -->
+                <div>
             <h5 class="left-align headings">Deudas - Saldo: <?php echo $deudaSaldo; ?></h5>
         </div>
-            <table class="highlight responsive-table">
+        <table id="tablaDeudas" class="highlight responsive-table">
+            <thead>
                 <tr>
                     <td><b>Descripción</b></td>
                     <td><b>Monto (MXN)</b></td>
                     <td><b>Fecha</b></td>
-                <tr>
-        <?php
-            $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'"; 
-            $resultado = mysqli_query($conexion, $consulta);
-            
-            while($mostrar = mysqli_fetch_array($resultado)) {
-        ?>
-                <tr>
-                    <td><?php echo $mostrar['DeudaDesc']; ?></td>
-                    <td><?php echo $mostrar['DeudaMonto']; ?></td>
-                    <td><?php echo $mostrar['DeudaFecha']; ?></td>
+                    <td><b>Acciones</b></td>
                 </tr>
-        <?php
-            }            
-        ?>
-            </table>
+            </thead>
+            <tbody>
+                <?php
+                $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'"; 
+                $resultado = mysqli_query($conexion, $consulta);
+                while ($mostrar = mysqli_fetch_array($resultado)) {
+                ?>
+                <tr data-id="<?php echo $mostrar['idDeuda']; ?>">
+                    <td class="desc" contenteditable="false"><?php echo $mostrar['DeudaDesc']; ?></td>
+                    <td class="monto" contenteditable="false"><?php echo $mostrar['DeudaMonto']; ?></td>
+                    <td class="fecha" contenteditable="false"><?php echo $mostrar['DeudaFecha']; ?></td>
+                    <td>
+                        <button class="eliminar" type="button">Eliminar</button>
+                    </td>
+                </tr>
+                <?php
+                }            
+                ?>
+            </tbody>
+        </table>
+        <!-- Botones para modificar y eliminar deudas -->
+        <div class="botones">
+            <button id="editar" type="button">Editar</button>
+            <button id="guardar" type="button" style="visibility: hidden;">Guardar cambios</button>
         </div>
     </section>
-
+    
     <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Escapar y validar los datos recibidos
@@ -134,7 +146,7 @@
                 echo "<p style='color: red;'>Error al guardar los datos: " . mysqli_error($conexion) . "</p>";
             }
         }    
-    ?>
+        ?>
 
     <!-- Incluir el archivo externo -->
     <script src="javascript/script_02.js"></script>
@@ -157,6 +169,8 @@
             });
         </script>
 
+        <!-- FOOTER -->
+    <br>
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
