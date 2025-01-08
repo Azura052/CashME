@@ -84,7 +84,7 @@
         <br>
         <br>
         <!-- Tabla Deudas -->
-                <div>
+        <div>
             <h5 class="left-align headings">Deudas - Saldo: <?php echo $deudaSaldo; ?></h5>
         </div>
         <table id="tablaDeudas" class="highlight responsive-table">
@@ -107,6 +107,8 @@
                     <td class="monto" contenteditable="false"><?php echo $mostrar['DeudaMonto']; ?></td>
                     <td class="fecha" contenteditable="false"><?php echo $mostrar['DeudaFecha']; ?></td>
                     <td>
+                        <!-- Botones para modificar y eliminar deudas -->
+                        <button id="editar" type="button">Editar</button>
                         <button class="eliminar" type="button">Eliminar</button>
                     </td>
                 </tr>
@@ -115,11 +117,6 @@
                 ?>
             </tbody>
         </table>
-        <!-- Botones para modificar y eliminar deudas -->
-        <div class="botones">
-            <button id="editar" type="button">Editar</button>
-            <button id="guardar" type="button" style="visibility: hidden;">Guardar cambios</button>
-        </div>
     </section>
     
     <?php

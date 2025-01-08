@@ -40,111 +40,86 @@ function validateForm(event) {
     return isValid;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Script cargado correctamente.");
+//Funcion de los botones de deudas
+document.addEventListener("DOMContentLoaded", function () {
+    const tablaDeudas = document.getElementById("tablaDeudas");
 
-    const editarBtn = document.getElementById("editar");
-    const guardarBtn = document.getElementById("guardar");
-    const tabla = document.getElementById("tablaDeudas");
+    // Editar fila
+    tablaDeudas.addEventListener("click", function (event) {
+        if (event.target.id === "editar") {
+            const row = event.target.closest("tr");
+            const desc = row.querySelector(".desc");
+            const monto = row.querySelector(".monto");
+            const fecha = row.querySelector(".fecha");
 
-    if (!editarBtn || !guardarBtn || !tabla) {
-        console.error("Error: Algunos elementos no se encontraron.");
-        return;
-    }
-
-    // Habilitar edición
-    editarBtn.addEventListener("click", () => {
-        console.log("Botón Editar presionado.");
-        const filas = tabla.querySelectorAll("tbody tr");
-        filas.forEach(fila => {
-            const celdas = fila.querySelectorAll("td");
-            celdas.forEach(celda => {
-                celda.setAttribute("contenteditable", "true");
-                celda.style.border = "1px solid #ddd";
-            });
-        });
-        guardarBtn.style.visibility = "visible";
-        editarBtn.style.visibility = "hidden";
-    });
-
-    // Guardar cambios
-    guardarBtn.addEventListener("click", () => {
-        console.log("Botón Guardar presionado.");
-        const filas = tabla.querySelectorAll("tbody tr");
-        const datos = [];
-
-        filas.forEach(fila => {
-            const celdas = fila.querySelectorAll("td");
-            const desc = celdas[0].innerText.trim();
-            const monto = celdas[1].innerText.trim();
-            const fecha = celdas[2].innerText.trim();
-            const id = fila.dataset.id;
-            datos.push({ id, desc, monto, fecha });
-        });
-
-        console.log("Datos a guardar:", datos);
-
-        fetch("guardar_deudas.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ deudas: datos }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Respuesta del servidor:", data);
-            if (data.success) {
-                alert("Datos guardados correctamente");
-                filas.forEach(fila => {
-                    const celdas = fila.querySelectorAll("td");
-                    celdas.forEach(celda => {
-                        celda.setAttribute("contenteditable", "false");
-                        celda.style.border = "none";
-                    });
-                });
-                guardarBtn.style.visibility = "hidden";
-                editarBtn.style.visibility = "visible";
+            if (event.target.innerText === "Editar") {
+                // Habilitar edición
+                desc.contentEditable = true;
+                monto.contentEditable = true;
+                fecha.contentEditable = true;
+                event.target.innerText = "Guardar";
+                row.classList.add("editing");
             } else {
-                console.error("Error del servidor:", data.error || "Error desconocido");
-                alert("Error al guardar los datos: " + (data.error || "Error desconocido"));
+                // Guardar cambios
+                const idDeuda = row.getAttribute("data-id");
+                const nuevaDesc = desc.innerText;
+                const nuevoMonto = monto.innerText;
+                const nuevaFecha = fecha.innerText;
+
+                fetch("actualizar_deuda.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idDeuda: idDeuda,
+                        DeudaDesc: nuevaDesc,
+                        DeudaMonto: nuevoMonto,
+                        DeudaFecha: nuevaFecha,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert("Deuda actualizada correctamente.");
+                            desc.contentEditable = false;
+                            monto.contentEditable = false;
+                            fecha.contentEditable = false;
+                            event.target.innerText = "Editar";
+                            row.classList.remove("editing");
+                        } else {
+                            alert("Error al actualizar la deuda.");
+                        }
+                    })
+                    .catch((error) => console.error("Error:", error));
             }
-        })
-        .catch(error => {
-            console.error("Error de conexión o de servidor:", error);
-            alert("Hubo un error al guardar los datos");
-        });
+        }
     });
 
     // Eliminar fila
-    tabla.addEventListener("click", (event) => {
+    tablaDeudas.addEventListener("click", function (event) {
         if (event.target.classList.contains("eliminar")) {
-            const fila = event.target.closest("tr");
-            const id = fila.dataset.id;
+            const row = event.target.closest("tr");
+            const idDeuda = row.getAttribute("data-id");
 
-            // Confirmar antes de eliminar
             if (confirm("¿Estás seguro de que deseas eliminar esta deuda?")) {
                 fetch("eliminar_deuda.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ id }),
+                    body: JSON.stringify({ idDeuda: idDeuda }),
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Deuda eliminada correctamente");
-                        fila.remove(); // Eliminar la fila visualmente
-                    } else {
-                        console.error("Error al eliminar:", data.error || "Error desconocido");
-                        alert("Error al eliminar la deuda: " + (data.error || "Error desconocido"));
-                    }
-                })
-                .catch(error => {
-                    console.error("Error de conexión o de servidor:", error);
-                    alert("Hubo un error al eliminar la deuda");
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert("Deuda eliminada correctamente.");
+                            row.remove();
+                        } else {
+                            alert("Error al eliminar la deuda.");
+                        }
+                    })
+                    .catch((error) => console.error("Error:", error));
             }
         }
     });
