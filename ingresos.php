@@ -48,14 +48,15 @@
                 <path d="M15 11v.01"></path>
                 <path d="M5.173 8.378a3 3 0 1 1 4.656 -1.377"></path>
                 <path d="M16 4v3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342c-.336 .95 -.907 1.8 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3h0z"></path>
-              </svg></a>
+            </svg></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a class="sombras" href="resumen.php">Resumen</a></li>
-            <li><a class="sombras" href="ingresos.php">Ingresos</a></li>
-            <li><a class="sombras" href="gastos.php">Gastos</a></li>
-            <li><a class="sombras" href="deudas.php">Deudas</a></li>
-            <li><a class="sombras" href="ahorros.php">Ahorros</a></li>
-            <li><a id="cierre" href="logout.php">   Cerrar Sesión</a></li>
+                <li><a class="sombras" href="resumen.php">Resumen</a></li>
+                <li><a class="sombras" href="ingresos.php">Ingresos</a></li>
+                <li><a class="sombras" href="presupuestos.php">Presupuestos</a></li>
+                <li><a class="sombras" href="deudas.php">Deudas</a></li>
+                <li><a class="sombras" href="inversiones.php">Inversiones</a></li>
+                <li><a class="sombras" href="adeudos.php">Adeudos</a></li>
+                <li><a id="cierre" href="logout.php">   Cerrar Sesión</a></li>
             </ul>
         </div>
     </nav>
@@ -100,29 +101,69 @@
         <br>
         <br> <!--Tabla Ingresos-->
         <div>
-            <h5 class="left-align headings">Ingresos  - Saldo: <?php echo $ingresoSaldo; ?></h5>
+            <h5 class="left-align headings">Ingresos - Saldo Total: <?php echo $ingresoSaldo; ?> MXN</h5>
         </div>
             <table class="highlight responsive-table">
-                <tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                <tr>
-        <?php
-            $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id'"; 
+            <?php
+            // Obtener los ingresos del usuario
+            $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id' ORDER BY IngresoFecha ASC"; 
             $resultado = mysqli_query($conexion, $consulta);
-            
+
+            $ingresos = [];
             while($mostrar = mysqli_fetch_array($resultado)) {
+                $ingresos[] = $mostrar;
+            }
+
+            // Separar los ingresos en periodos de 15 días
+            $periodos = [];
+            $periodo_actual = [];
+            $fecha_inicio = null;
+
+            foreach ($ingresos as $ingreso) {
+                $fecha_ingreso = new DateTime($ingreso['IngresoFecha']);
+                if ($fecha_inicio === null) {
+                    $fecha_inicio = $fecha_ingreso;
+                }
+
+                $intervalo = $fecha_inicio->diff($fecha_ingreso)->days;
+                if ($intervalo < 15) {
+                    $periodo_actual[] = $ingreso;
+                } else {
+                    $periodos[] = $periodo_actual;
+                    $periodo_actual = [$ingreso];
+                    $fecha_inicio = $fecha_ingreso;
+                }
+            }
+
+            if (!empty($periodo_actual)) {
+                $periodos[] = $periodo_actual;
+            }
+
+            // Mostrar las tablas de ingresos por periodos de 15 días
+            foreach ($periodos as $index => $periodo) {
+                $suma_periodo = array_reduce($periodo, function($carry, $item) {
+                    return $carry + $item['IngresoMonto'];
+                }, 0);
+                echo "<h5 class='left-align headings1'>Total: $suma_periodo MXN</h5>";
+                echo "<table class='highlight responsive-table'>";
+                echo "<tr>
+                        <td><b>Descripción</b></td>
+                        <td><b>Monto (MXN)</b></td>
+                        <td><b>Fecha</b></td>
+                        </tr>";
+
+                foreach ($periodo as $ingreso) {
+                    echo "<tr>
+                            <td>{$ingreso['IngresoDesc']}</td>
+                            <td>{$ingreso['IngresoMonto']}</td>
+                            <td>{$ingreso['IngresoFecha']}</td>
+                            </tr>";
+                }
+
+                echo "</table><br>";
+            }
         ?>
-                <tr>
-                    <td><?php echo $mostrar['IngresoDesc']; ?></td>
-                    <td><?php echo $mostrar['IngresoMonto']; ?></td>
-                    <td><?php echo $mostrar['IngresoFecha']; ?></td>
-                </tr>
-        <?php
-            }            
-        ?>
-            </table>
+        </table>
         </div>
     </section>
 

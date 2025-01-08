@@ -21,21 +21,28 @@
     $result_saldo = mysqli_query($conexion, $query_saldo);
     $row_saldo = mysqli_fetch_assoc($result_saldo);
     $ingresoSaldo = $row_saldo['ingresoSaldo'];
-    // Obtener el saldo de ahorros del usuario
-    $query_saldo = "SELECT SUM(AhorroMonto) as ahorroSaldo FROM Ahorro WHERE usuario_idUsuario = $usuario_id";
+    // Obtener el saldo de presupuestos del usuario
+    $query_saldo = "SELECT SUM(PresupuestoMonto) as presupuestoSaldo FROM Presupuesto WHERE usuario_idUsuario = $usuario_id";
     $result_saldo = mysqli_query($conexion, $query_saldo);
     $row_saldo = mysqli_fetch_assoc($result_saldo);
-    $ahorroSaldo = $row_saldo['ahorroSaldo'];
+    $presupuestoSaldo = $row_saldo['presupuestoSaldo'];
     // Obtener el saldo de deudas del usuario
     $query_saldo = "SELECT SUM(DeudaMonto) as deudaSaldo FROM Deuda WHERE usuario_idUsuario = $usuario_id";
     $result_saldo = mysqli_query($conexion, $query_saldo);
     $row_saldo = mysqli_fetch_assoc($result_saldo);
     $deudaSaldo = $row_saldo['deudaSaldo'];
-    // Obtener el saldo de gastos del usuario
-    $query_saldo = "SELECT SUM(GastoMonto) as gastoSaldo FROM Gasto WHERE usuario_idUsuario = $usuario_id";
+
+    // Obtener el saldo de inversiones del usuario
+    $query_saldo = "SELECT SUM(InversionMonto) as inversionSaldo FROM Inversion WHERE usuario_idUsuario = $usuario_id";
     $result_saldo = mysqli_query($conexion, $query_saldo);
     $row_saldo = mysqli_fetch_assoc($result_saldo);
-    $gastoSaldo = $row_saldo['gastoSaldo'];
+    $inversionSaldo = $row_saldo['inversionSaldo'];
+
+    // Obtener el saldo de adeudos del usuario
+    $query_saldo = "SELECT SUM(AdeudoMonto) as adeudoSaldo FROM Adeudo WHERE usuario_idUsuario = $usuario_id";
+    $result_saldo = mysqli_query($conexion, $query_saldo);
+    $row_saldo = mysqli_fetch_assoc($result_saldo);
+    $adeudoSaldo = $row_saldo['adeudoSaldo'];
 ?>
 
 <!DOCTYPE html>
@@ -66,9 +73,10 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a class="sombras" href="resumen.php">Resumen</a></li>
             <li><a class="sombras" href="ingresos.php">Ingresos</a></li>
-            <li><a class="sombras" href="gastos.php">Gastos</a></li>
+            <li><a class="sombras" href="presupuestos.php">Presupuestos</a></li>
             <li><a class="sombras" href="deudas.php">Deudas</a></li>
-            <li><a class="sombras" href="ahorros.php">Ahorros</a></li>
+            <li><a class="sombras" href="inversiones.php">Inversiones</a></li>
+            <li><a class="sombras" href="adeudos.php">Adeudos</a></li>
             <li><a id="cierre" href="logout.php">   Cerrar Sesión</a></li>
             </ul>
         </div>
@@ -88,6 +96,8 @@
                 <path d="M16 16l3.923 -.98"></path>
                 </svg></h5>
                 <p>Si deseas conocer sobre tus movimientos de este mes, puedes consultarlos generando un resumen.</p>
+                <p>¡No olvides que CashME está aquí para ayudarte a mejorar tus finanzas personales!</p>
+                <p>*Recuerda que los todos tus movimientos son separados en movimientos quincenales.*</p>
             </div>
             <div class="botones-reporte">
             <button class="boton-reporte" onclick="window.location.href='generarReporteMensual.php'">Reporte Mensual <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
@@ -101,9 +111,10 @@
             </div>
         <br> <!--Tabla Ingresos-->
         <div>
-            <h5 class="left-align headings">Ingresos  - Saldo: <?php echo $ingresoSaldo; ?></h5>
+            <h5 class="left-align headings">Ingresos - Saldo Total: <?php echo $ingresoSaldo; ?> MXN</h5>
         </div>
-            <?php
+            <table class="highlight responsive-table">
+                <?php
                 // Obtener los ingresos del usuario
                 $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id' ORDER BY IngresoFecha ASC"; 
                 $resultado = mysqli_query($conexion, $consulta);
@@ -140,7 +151,10 @@
 
                 // Mostrar las tablas de ingresos por periodos de 15 días
                 foreach ($periodos as $index => $periodo) {
-                    echo "<h5 class='left-align headings1'>Quincena " . ($index + 1) . "</h5>";
+                    $suma_periodo = array_reduce($periodo, function($carry, $item) {
+                        return $carry + $item['IngresoMonto'];
+                    }, 0);
+                    echo "<h5 class='left-align headings1'>Total: $suma_periodo MXN</h5>";
                     echo "<table class='highlight responsive-table'>";
                     echo "<tr>
                             <td><b>Descripción</b></td>
@@ -159,83 +173,278 @@
                     echo "</table><br>";
                 }
             ?>
-        <br> <!--Tabla Gastos-->
-        <div>
-            <h5 class="left-align headings">Gastos - Saldo: <?php echo $gastoSaldo; ?></h5>
-        </div>
-            <table class="highlight responsive-table">
-                <tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                    <td><b>Cobro</b></td>
-                <tr>
-        <?php
-            $consulta = "SELECT * FROM gasto WHERE usuario_idUsuario = '$usuario_id'"; 
-            $resultado = mysqli_query($conexion, $consulta);
-            
-            while($mostrar = mysqli_fetch_array($resultado)) {
-        ?>
-            <tr>
-                <td><?php echo $mostrar['GastoDesc']; ?></td>
-                <td><?php echo $mostrar['GastoMonto']; ?></td>
-                <td><?php echo $mostrar['GastoFecha']; ?></td>
-                <td><?php echo $mostrar['GastoCobro']; ?></td>
-            </tr>
-        <?php
-            
-            }
-        ?>
             </table>
-        <br> <!--Tabla Ahorros-->
+        <br> <!--Tabla Presupuestos-->
         <div>
-            <h5 class="left-align headings">Ahorros - Saldo: <?php echo $ahorroSaldo; ?></h5>
+            <h5 class="left-align headings">Presupuestos - Saldo Total: <?php echo $presupuestoSaldo; ?> MXN</h5>
         </div>
             <table class="highlight responsive-table">
-                <tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                <tr>
-        <?php
-            $consulta = "SELECT * FROM ahorro WHERE usuario_idUsuario = '$usuario_id'"; 
-            $resultado = mysqli_query($conexion, $consulta);
-            
-            while($mostrar = mysqli_fetch_array($resultado)) {
-        ?>
-            <tr>
-                <td><?php echo $mostrar['AhorroDesc']; ?></td>
-                <td><?php echo $mostrar['AhorroMonto']; ?></td>
-                <td><?php echo $mostrar['AhorroFecha']; ?></td>
-            </tr>
-        <?php
-            }
-        ?>
+            <?php
+                // Obtener los presupuestos del usuario
+                $consulta = "SELECT * FROM presupuesto WHERE usuario_idUsuario = '$usuario_id' ORDER BY PresupuestoFecha ASC"; 
+                $resultado = mysqli_query($conexion, $consulta);
+
+                $presupuestos = [];
+                while($mostrar = mysqli_fetch_array($resultado)) {
+                    $presupuestos[] = $mostrar;
+                }
+
+                // Separar los presupuestos en periodos de 15 días
+                $periodos = [];
+                $periodo_actual = [];
+                $fecha_inicio = null;
+
+                foreach ($presupuestos as $presupuesto) {
+                    $fecha_presupuesto = new DateTime($presupuesto['PresupuestoFecha']);
+                    if ($fecha_inicio === null) {
+                        $fecha_inicio = $fecha_presupuesto;
+                    }
+
+                    $intervalo = $fecha_inicio->diff($fecha_presupuesto)->days;
+                    if ($intervalo < 15) {
+                        $periodo_actual[] = $presupuesto;
+                    } else {
+                        $periodos[] = $periodo_actual;
+                        $periodo_actual = [$presupuesto];
+                        $fecha_inicio = $fecha_presupuesto;
+                    }
+                }
+
+                if (!empty($periodo_actual)) {
+                    $periodos[] = $periodo_actual;
+                }
+
+                // Mostrar las tablas de presupuestos por periodos de 15 días
+                foreach ($periodos as $index => $periodo) {
+                    $suma_periodo = array_reduce($periodo, function($carry, $item) {
+                        return $carry + $item['PresupuestoMonto'];
+                    }, 0);
+                    echo "<h5 class='left-align headings1'>Total: $suma_periodo MXN</h5>";
+                    echo "<table class='highlight responsive-table'>";
+                    echo "<tr>
+                            <td><b>Descripción</b></td>
+                            <td><b>Monto (MXN)</b></td>
+                            <td><b>Fecha</b></td>
+                            <td><b>Tipo de presupuesto</b></td>
+                          </tr>";
+
+                    foreach ($periodo as $presupuesto) {
+                        echo "<tr>
+                                <td>{$presupuesto['PresupuestoDesc']}</td>
+                                <td>{$presupuesto['PresupuestoMonto']}</td>
+                                <td>{$presupuesto['PresupuestoFecha']}</td>
+                                <td>{$presupuesto['PresupuestoTipo']}</td>
+                              </tr>";
+                    }
+
+                    echo "</table><br>";
+                }
+            ?>
             </table>
             <br> <!--Tabla Deudas-->
-        <div>
-            <h5 class="left-align headings">Deudas - Saldo: <?php echo $deudaSaldo; ?></h5>
-        </div>
+            <div>
+                <h5 class="left-align headings">Deudas - Saldo Total: <?php echo $deudaSaldo; ?> MXN</h5>
+            </div>
             <table class="highlight responsive-table">
-                <tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha de vencimiento</b></td>
-                <tr>
-        <?php
-            $consulta = "SELECT * FROM deuda WHERE usuario_idUsuario = '$usuario_id'"; 
-            $resultado = mysqli_query($conexion, $consulta);
-            
-            while($mostrar = mysqli_fetch_array($resultado)) {
-        ?>
-            <tr>
-                <td><?php echo $mostrar['DeudaDesc']; ?></td>
-                <td><?php echo $mostrar['DeudaMonto']; ?></td>
-                <td><?php echo $mostrar['DeudaFecha']; ?></td>
-            </tr>
-        <?php
-            }            
-        ?>
+                <?php
+                    // Obtener las deudas del usuario
+                    $consulta = "SELECT * FROM deuda WHERE usuario_idUsuario = '$usuario_id' ORDER BY DeudaFecha ASC"; 
+                    $resultado = mysqli_query($conexion, $consulta);
+
+                    $deudas = [];
+                    while($mostrar = mysqli_fetch_array($resultado)) {
+                        $deudas[] = $mostrar;
+                    }
+
+                    // Separar las deudas en periodos de 15 días
+                    $periodos = [];
+                    $periodo_actual = [];
+                    $fecha_inicio = null;
+
+                    foreach ($deudas as $deuda) {
+                        $fecha_deuda = new DateTime($deuda['DeudaFecha']);
+                        if ($fecha_inicio === null) {
+                            $fecha_inicio = $fecha_deuda;
+                        }
+
+                        $intervalo = $fecha_inicio->diff($fecha_deuda)->days;
+                        if ($intervalo < 15) {
+                            $periodo_actual[] = $deuda;
+                        } else {
+                            $periodos[] = $periodo_actual;
+                            $periodo_actual = [$deuda];
+                            $fecha_inicio = $fecha_deuda;
+                        }
+                    }
+
+                    if (!empty($periodo_actual)) {
+                        $periodos[] = $periodo_actual;
+                    }
+
+                    // Mostrar las tablas de deudas por periodos de 15 días
+                    foreach ($periodos as $index => $periodo) {
+                        $suma_periodo = array_reduce($periodo, function($carry, $item) {
+                            return $carry + $item['DeudaMonto'];
+                        }, 0);
+                        echo "<h5 class='left-align headings1'>Total: $suma_periodo MXN</h5>";
+                        echo "<table class='highlight responsive-table'>";
+                        echo "<tr>
+                                <td><b>Descripción</b></td>
+                                <td><b>Monto (MXN)</b></td>
+                                <td><b>Fecha</b></td>
+                                <td><b>Deuda</b></td>
+                            </tr>";
+
+                        foreach ($periodo as $deuda) {
+                            echo "<tr>
+                                    <td>{$deuda['DeudaDesc']}</td>
+                                    <td>{$deuda['DeudaMonto']}</td>
+                                    <td>{$deuda['DeudaFecha']}</td>
+                                    <td>{$deuda['DeudaCobro']}</td>
+                                </tr>";
+                        }
+
+                        echo "</table><br>";
+                    }
+                ?>
+            </table>
+            <br> <!--Tabla Inversiones-->
+            <div>
+                <h5 class="left-align headings">Inversiones - Saldo Total: <?php echo $inversionSaldo; ?> MXN</h5>
+            </div>
+            <table class="highlight responsive-table">
+                <?php
+                    // Obtener las inversiones del usuario
+                    $consulta = "SELECT * FROM inversion WHERE usuario_idUsuario = '$usuario_id' ORDER BY InversionFecha ASC"; 
+                    $resultado = mysqli_query($conexion, $consulta);
+
+                    $inversiones = [];
+                    while($mostrar = mysqli_fetch_array($resultado)) {
+                        $inversiones[] = $mostrar;
+                    }
+
+                    // Separar las inversiones en periodos de 15 días
+                    $periodos = [];
+                    $periodo_actual = [];
+                    $fecha_inicio = null;
+
+                    foreach ($inversiones as $inversion) {
+                        $fecha_inversion = new DateTime($inversion['InversionFecha']);
+                        if ($fecha_inicio === null) {
+                            $fecha_inicio = $fecha_inversion;
+                        }
+
+                        $intervalo = $fecha_inicio->diff($fecha_inversion)->days;
+                        if ($intervalo < 15) {
+                            $periodo_actual[] = $inversion;
+                        } else {
+                            $periodos[] = $periodo_actual;
+                            $periodo_actual = [$inversion];
+                            $fecha_inicio = $fecha_inversion;
+                        }
+                    }
+
+                    if (!empty($periodo_actual)) {
+                        $periodos[] = $periodo_actual;
+                    }
+
+                    // Mostrar las tablas de inversiones por periodos de 15 días
+                    foreach ($periodos as $index => $periodo) {
+                        $suma_periodo = array_reduce($periodo, function($carry, $item) {
+                            return $carry + $item['InversionMonto'];
+                        }, 0);
+                        echo "<h5 class='left-align headings1'>Total: $suma_periodo MXN</h5>";
+                        echo "<table class='highlight responsive-table'>";
+                        echo "<tr>
+                                <td><b>Descripción</b></td>
+                                <td><b>Monto (MXN)</b></td>
+                                <td><b>Fecha</b></td>
+                                <td><b>Porcentaje de rendimiento</b></td>
+                                <td><b>Rendimiento esperado MXN</b></td>
+                            </tr>";
+
+                        foreach ($periodo as $inversion) {
+                            echo "<tr>
+                                    <td>{$inversion['InversionDesc']}</td>
+                                    <td>{$inversion['InversionMonto']}</td>
+                                    <td>{$inversion['InversionFecha']}</td>
+                                    <td>{$inversion['InversionPor']}</td>
+                                    <td>{$inversion['InversionRen']}</td>
+                                </tr>";
+                        }
+
+                        echo "</table><br>";
+                    }
+                ?>
+            </table>
+            <br> <!--Tabla Adeudos-->
+            <div>
+                <h5 class="left-align headings">Adeudos - Saldo Total: <?php echo $adeudoSaldo; ?> MXN</h5>
+            </div>
+            <table class="highlight responsive-table">
+                <?php
+                    // Obtener los adeudos del usuario
+                    $consulta = "SELECT * FROM adeudo WHERE usuario_idUsuario = '$usuario_id' ORDER BY AdeudoFecha ASC"; 
+                    $resultado = mysqli_query($conexion, $consulta);
+
+                    $adeudos = [];
+                    while($mostrar = mysqli_fetch_array($resultado)) {
+                        $adeudos[] = $mostrar;
+                    }
+
+                    // Separar los adeudos en periodos de 15 días
+                    $periodos = [];
+                    $periodo_actual = [];
+                    $fecha_inicio = null;
+
+                    foreach ($adeudos as $adeudo) {
+                        $fecha_adeudo = new DateTime($adeudo['AdeudoFecha']);
+                        if ($fecha_inicio === null) {
+                            $fecha_inicio = $fecha_adeudo;
+                        }
+
+                        $intervalo = $fecha_inicio->diff($fecha_adeudo)->days;
+                        if ($intervalo < 15) {
+                            $periodo_actual[] = $adeudo;
+                        } else {
+                            $periodos[] = $periodo_actual;
+                            $periodo_actual = [$adeudo];
+                            $fecha_inicio = $fecha_adeudo;
+                        }
+                    }
+
+                    if (!empty($periodo_actual)) {
+                        $periodos[] = $periodo_actual;
+                    }
+
+                    // Mostrar las tablas de adeudos por periodos de 15 días
+                    foreach ($periodos as $index => $periodo) {
+                        $suma_periodo = array_reduce($periodo, function($carry, $item) {
+                            return $carry + $item['AdeudoMonto'];
+                        }, 0);
+                        echo "<h5 class='left-align headings1'>Total: $suma_periodo MXN</h5>";
+                        echo "<table class='highlight responsive-table'>";
+                        echo "<tr>
+                                <td><b>Descripción</b></td>
+                                <td><b>Monto (MXN)</b></td>
+                                <td><b>Fecha</b></td>
+                                <td><b>Entidad acreedora</b></td>
+                                <td><b>Estado del adeudo</b></td>
+                            </tr>";
+
+                        foreach ($periodo as $adeudo) {
+                            echo "<tr>
+                                    <td>{$adeudo['AdeudoDesc']}</td>
+                                    <td>{$adeudo['AdeudoMonto']}</td>
+                                    <td>{$adeudo['AdeudoFecha']}</td>
+                                    <td>{$adeudo['AdeudoCobro']}</td>
+                                    <td>{$adeudo['AdeudoEstado']}</td>
+                                </tr>";
+                        }
+
+                        echo "</table><br>";
+                    }
+                ?>
             </table>
         </div>
     </section>
@@ -254,3 +463,4 @@
     </footer>
 </body>
 </html>
+
