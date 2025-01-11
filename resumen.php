@@ -63,6 +63,12 @@
     <link href="css/styles_01.css" rel="stylesheet">
 </head>
 <body>
+<!--TODO: Cambiar aqui lo de la busqueda-->
+        <!-- Formulario de búsqueda -->
+        <form action="" method="GET">
+        <input type="text" name="query" placeholder="Escribe tu búsqueda aquí">
+        <button type="submit">Buscar</button>
+    </form>
     <nav>
         <div class="nav-wrapper">
             <a href="index.html" class="brand-logo">CashME <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1">
