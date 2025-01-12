@@ -16,10 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $codigoPostal = $_POST['codigoPostal'];
     $colonia = $_POST['colonia'];
     $calle = $_POST['calle'];
+    $fechaRegistro = date('Y-m-d H:i:s');
 
-        // Insertar en la tabla usuario
-        $sqlUsuario = "INSERT INTO usuario (usuarioNom, usuarioApePat, usuarioApeMat, usuarioTel, usuarioEmail, usuarioContra) 
-                        VALUES ('$nombre', '$apellidoPaterno', '$apellidoMaterno', '$telefono', '$email', '$password')";
+    // Insertar en la tabla usuario
+    $sqlUsuario = "INSERT INTO usuario (usuarioNom, usuarioApePat, usuarioApeMat, usuarioTel, usuarioEmail, usuarioContra, usuarioSesion) 
+            VALUES ('$nombre', '$apellidoPaterno', '$apellidoMaterno', '$telefono', '$email', '$password', '$fechaRegistro')";
+                    VALUES ('$nombre', '$apellidoPaterno', '$apellidoMaterno', '$telefono', '$email', '$password')";
 
         if ($conexion->query($sqlUsuario) === TRUE) {
             $last_id = $conexion->insert_id;

@@ -62,6 +62,16 @@ header {
     border-radius: 5px; 
 }
 
+.headings1{
+    margin: 20px 0; 
+    padding: 10px; 
+    background-color: var(--nar5); 
+    font-size: 1rem;
+    color: var(--gris); 
+    font-weight: bold; 
+    border-radius: 5px; 
+}
+
 .botones-reporte {
     display: flex;
     gap: 10px; 
@@ -128,7 +138,9 @@ button {
     float: left; /* Alinea los botones a la izquierda */
 }
 
-button.save, button.clear, button.edit, button.eliminate {
+
+button.save, 
+button.clear {
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -150,28 +162,6 @@ button.clear {
     color: var(--blanco);
 }
 
-button.edit{ 
-    background-color: var(--blanco);
-    color: var(--negro);
-}
-
-button.eliminate{ 
-    background-color: var(--blanco);
-    color: var(--negro);
-}
-
-button.eliminate:hover {
-    background-color: var(--blanco);
-    color: var(--negro);
-    border: 2px solid var(--negro); 
-    font-size: 1.2rem;
-}
-button.edit:hover {
-    background-color: var(--blanco);
-    color: var(--negro);
-    border: 2px solid var(--negro); 
-    font-size: 1.2rem;
-}
 button.save:hover {
     background-color: var(--blanco);
     color: var(--verde);

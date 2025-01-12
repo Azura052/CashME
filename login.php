@@ -32,6 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Usuario encontrado - Iniciar sesión
                 $_SESSION['user_id'] = $user['idUsuario'];
                 $_SESSION['user_name'] = $user['usuarioNom'];
+                
+                // Actualizar la fecha de última conexión
+                $fechaRegistro = date('Y-m-d H:i:s');
+                $updateStmt = $conn->prepare("UPDATE usuario SET usuarioSesion = ? WHERE idUsuario = ?");
+                $updateStmt->execute([$fechaRegistro, $user['idUsuario']]);
+                
                 // Redirigir al dashboard o página principal
                 header("Location: resumen.php");
                 exit();

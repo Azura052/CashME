@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `dbCashme`.`usuario` (
   `usuarioTel` VARCHAR(45) NULL,
   `usuarioEmail` VARCHAR(45) NULL,
   `usuarioContra` VARCHAR(45) NULL,
+  `usuarioSesion` DATE NULL,
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB;
 
@@ -168,11 +169,11 @@ INSERT INTO `dbCashme`.`Admin` (`AdminUser`, `AdminContra`)
 VALUES ('Admin1', 'password123');
 
 -- Insertar usuarios
-INSERT INTO `dbCashme`.`usuario` (`usuarioNom`, `usuarioApePat`, `usuarioApeMat`, `usuarioTel`, `usuarioEmail`, `usuarioContra`)
+INSERT INTO `dbCashme`.`usuario` (`usuarioNom`, `usuarioApePat`, `usuarioApeMat`, `usuarioTel`, `usuarioEmail`, `usuarioContra`, `usuarioSesion`)
 VALUES 
-('Juan', 'Pérez', 'Gómez', '1234567890', 'juan.perez@example.com', 'contra123'),
-('Ana', 'López', 'Martínez', '0987654321', 'ana.lopez@example.com', 'contra123'),
-('Carlos', 'Hernández', 'Sánchez', '1122334455', 'carlos.hernandez@example.com', 'contra123');
+('Juan', 'Pérez', 'Gómez', '1234567890', 'juan.perez@example.com', 'contra123', '2025-01-01'),
+('Ana', 'López', 'Martínez', '0987654321', 'ana.lopez@example.com', 'contra123', '2025-01-01'),
+('Carlos', 'Hernández', 'Sánchez', '1122334455', 'carlos.hernandez@example.com', 'contra123', '2025-01-01');
 
 -- Insertar direcciones para los usuarios
 INSERT INTO `dbCashme`.`usuarioDir` (`usuarioDireccionEstado`, `usuarioDireccionCP`, `usuarioDireccioncol`, `usuarioDireccionCalle`, `usuario_idUsuario`)
@@ -197,15 +198,15 @@ VALUES
 -- Insertar datos en Deudas
 INSERT INTO `dbCashme`.`Deuda` (`DeudaDesc`, `DeudaMonto`, `DeudaFecha`, `DeudaCobro`, `usuario_idUsuario`)
 VALUES 
-('Préstamo', 10000, '2025-01-01', 'Mensual', 1),
-('Hipoteca', 50000, '2025-01-02', 'Anual', 1),
-('Tarjeta Crédito', 3000, '2025-01-03', 'Mensual', 1),
-('Préstamo', 15000, '2025-01-01', 'Mensual', 2),
-('Hipoteca', 60000, '2025-01-02', 'Anual', 2),
-('Tarjeta Crédito', 4000, '2025-01-03', 'Mensual', 2),
-('Préstamo', 20000, '2025-01-01', 'Mensual', 3),
-('Hipoteca', 70000, '2025-01-02', 'Anual', 3),
-('Tarjeta Crédito', 5000, '2025-01-03', 'Mensual', 3);
+('Préstamo', 10000, '2025-01-01', 'Banco', 1),
+('Hipoteca', 50000, '2025-01-02', 'Mama', 1),
+('Tarjeta Crédito', 3000, '2025-01-03', 'Tarjeta de MercadoPago', 1),
+('Préstamo', 15000, '2025-01-01', 'Banco', 2),
+('Hipoteca', 60000, '2025-01-02', 'Mama', 2),
+('Tarjeta Crédito', 4000, '2025-01-03', 'Tarjeta de MercadoPago', 2),
+('Préstamo', 20000, '2025-01-01', 'Banco', 3),
+('Hipoteca', 70000, '2025-01-02', 'Tarjeta de MercadoPago', 3),
+('Tarjeta Crédito', 5000, '2025-01-03', 'Mama', 3);
 
 -- Insertar datos en Adeudos
 INSERT INTO `dbCashme`.`Adeudo` (`AdeudoDesc`, `AdeudoMonto`, `AdeudoFecha`, `AdeudoCobro`, `AdeudoEstado`, `usuario_idUsuario`)

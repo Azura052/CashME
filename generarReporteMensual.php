@@ -38,7 +38,6 @@ class PDF extends FPDF
 
     function Header()
     {
-    
         $this->Image('img/logoEscom.png', 10, 10, 30);
         
         // Título principal
@@ -131,24 +130,25 @@ $pdf->SetAutoPageBreak(true, 30);
 // Definir categorías y sus colores
 $categories = [
     'Ingreso' => [46, 204, 113], // Verde
-    'Ahorro' => [52, 152, 219],  // Azul
-    'Gasto' => [231, 76, 60],    // Rojo
-    'Deuda' => [230, 126, 34]    // Naranja
+    'Deuda' => [231, 76, 60],    // Rojo
+    'Adeudo' => [230, 126, 34],  // Naranja
+    'Inversion' => [52, 152, 219], // Azul
+    'Presupuesto' => [128, 0, 128] // Púrpura
 ];
-$mes_actual = date('m/Y'); // Obtener el mes y año actual en formato numérico
+$mes_actual = date('Y-m'); // Obtener el mes y año actual en formato numérico
 
 foreach ($categories as $category => $color) {
-    $pdf->CategoryHeader($category . 's del Mes de ' . $mes_actual, $color);
+    $pdf->CategoryHeader($category . 's del Mes de ' . date('F Y'), $color);
     
     $header = ['Descripcion', 'Monto', 'Fecha'];
     $pdf->TableHeader($header);
 
     $query = "SELECT {$category}Desc, {$category}Monto, {$category}Fecha 
               FROM $category 
-              WHERE usuario_idUsuario = ? AND {$category}Fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+              WHERE usuario_idUsuario = ? AND DATE_FORMAT({$category}Fecha, '%Y-%m') = ?
               ORDER BY {$category}Fecha DESC";
     $stmt = $conexion->prepare($query);
-    $stmt->bind_param("i", $usuario_id);
+    $stmt->bind_param("is", $usuario_id, $mes_actual);
     $stmt->execute();
     $result = $stmt->get_result();
 
