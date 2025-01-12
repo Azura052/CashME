@@ -87,38 +87,37 @@
         <div>
             <h5 class="left-align headings">Deudas - Saldo: <?php echo $deudaSaldo; ?></h5>
         </div>
-        <table id="tablaDeudas" class="highlight responsive-table">
-            <thead>
-                <tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                    <td><b>Acciones</b></td>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'"; 
-                $resultado = mysqli_query($conexion, $consulta);
-                while ($mostrar = mysqli_fetch_array($resultado)) {
-                ?>
-                <tr data-id="<?php echo $mostrar['idDeuda']; ?>">
-                    <td class="desc" contenteditable="false"><?php echo $mostrar['DeudaDesc']; ?></td>
-                    <td class="monto" contenteditable="false"><?php echo $mostrar['DeudaMonto']; ?></td>
-                    <td class="fecha" contenteditable="false"><?php echo $mostrar['DeudaFecha']; ?></td>
-                    <td>
-                        <!-- Botones para modificar y eliminar deudas -->
-                        <button id="editar" type="button">Editar</button>
-                        <button class="eliminar" type="button">Eliminar</button>
-                    </td>
-                </tr>
-                <?php
-                }            
-                ?>
-            </tbody>
+        <table class="tablaDeudas">
+        <thead>
+            <tr>
+                <th><b>Descripción</b></th>
+                <th><b>Monto (MXN)</b></th>
+                <th><b>Fecha</b></th>
+                <th><b>Acciones</b></th>
+            </tr>
+        </thead>
+        <tbody id="tabla-deudas">
+        <?php
+        $consulta = "SELECT * FROM Deuda WHERE usuario_idUsuario = '$usuario_id'";
+        $resultado = mysqli_query($conexion, $consulta);
+        while ($mostrar = mysqli_fetch_array($resultado)) {
+        ?>
+        <tr data-id="<?php echo $mostrar['idDeuda']; ?>">
+            <td class="desc" contenteditable="false"><?php echo $mostrar['DeudaDesc']; ?></td>
+            <td class="monto" contenteditable="false"><?php echo $mostrar['DeudaMonto']; ?></td>
+            <td class="fecha" contenteditable="false"><?php echo $mostrar['DeudaFecha']; ?></td>
+            <td>
+                <button class="editar" type="button">Editar</button>
+                <button class="guardar" type="button" style="display:none;">Guardar</button>
+                <button class="eliminar" type="button">Eliminar</button>
+            </td>
+        </tr>
+        <?php
+        }
+        ?>
+        </tbody>
         </table>
-    </section>
-    
+        </section>
     <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Escapar y validar los datos recibidos

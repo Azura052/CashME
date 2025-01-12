@@ -40,87 +40,74 @@ function validateForm(event) {
     return isValid;
 }
 
-//Funcion de los botones de deudas
-document.addEventListener("DOMContentLoaded", function () {
-    const tablaDeudas = document.getElementById("tablaDeudas");
-
-    // Editar fila
-    tablaDeudas.addEventListener("click", function (event) {
-        if (event.target.id === "editar") {
-            const row = event.target.closest("tr");
-            const desc = row.querySelector(".desc");
-            const monto = row.querySelector(".monto");
-            const fecha = row.querySelector(".fecha");
-
-            if (event.target.innerText === "Editar") {
-                // Habilitar edición
-                desc.contentEditable = true;
-                monto.contentEditable = true;
-                fecha.contentEditable = true;
-                event.target.innerText = "Guardar";
-                row.classList.add("editing");
-            } else {
-                // Guardar cambios
-                const idDeuda = row.getAttribute("data-id");
-                const nuevaDesc = desc.innerText;
-                const nuevoMonto = monto.innerText;
-                const nuevaFecha = fecha.innerText;
-
-                fetch("actualizar_deuda.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        idDeuda: idDeuda,
-                        DeudaDesc: nuevaDesc,
-                        DeudaMonto: nuevoMonto,
-                        DeudaFecha: nuevaFecha,
-                    }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            alert("Deuda actualizada correctamente.");
-                            desc.contentEditable = false;
-                            monto.contentEditable = false;
-                            fecha.contentEditable = false;
-                            event.target.innerText = "Editar";
-                            row.classList.remove("editing");
-                        } else {
-                            alert("Error al actualizar la deuda.");
-                        }
-                    })
-                    .catch((error) => console.error("Error:", error));
-            }
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    // Editar funcionalidad
+    document.querySelectorAll('.editar').forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');
+            row.querySelectorAll('td[contenteditable="false"]').forEach(cell => {
+                cell.contentEditable = "true";
+            });
+            this.style.display = "none"; // Oculta el botón Editar
+            row.querySelector('.guardar').style.display = "inline-block"; // Muestra el botón Guardar
+        });
     });
 
-    // Eliminar fila
-    tablaDeudas.addEventListener("click", function (event) {
-        if (event.target.classList.contains("eliminar")) {
-            const row = event.target.closest("tr");
-            const idDeuda = row.getAttribute("data-id");
+    // Guardar cambios
+    document.querySelectorAll('.guardar').forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const id = row.dataset.id;
+            const desc = row.querySelector('.desc').textContent.trim();
+            const monto = row.querySelector('.monto').textContent.trim();
+            const fecha = row.querySelector('.fecha').textContent.trim();
 
-            if (confirm("¿Estás seguro de que deseas eliminar esta deuda?")) {
-                fetch("eliminar_deuda.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ idDeuda: idDeuda }),
+            // Enviar datos al servidor con AJAX
+            fetch('actualizar_deuda.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, desc, monto, fecha })
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'success') {
+                    alert('Deuda actualizada correctamente.');
+                } else {
+                    alert('Error al actualizar la deuda.');
+                }
+                // Bloquea las celdas nuevamente
+                row.querySelectorAll('td[contenteditable="true"]').forEach(cell => {
+                    cell.contentEditable = "false";
+                });
+                this.style.display = "none"; // Oculta el botón Guardar
+                row.querySelector('.editar').style.display = "inline-block"; // Muestra el botón Editar
+            });
+        });
+    });
+
+    // Eliminar funcionalidad
+    document.querySelectorAll('.eliminar').forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const id = row.dataset.id;
+
+            if (confirm('¿Estás seguro de que deseas eliminar esta deuda?')) {
+                // Enviar solicitud al servidor para eliminar
+                fetch('eliminar_deuda.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
                 })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            alert("Deuda eliminada correctamente.");
-                            row.remove();
-                        } else {
-                            alert("Error al eliminar la deuda.");
-                        }
-                    })
-                    .catch((error) => console.error("Error:", error));
+                .then(response => response.text())
+                .then(data => {
+                    if (data === 'success') {
+                        row.remove(); // Elimina la fila del DOM
+                        alert('Deuda eliminada correctamente.');
+                    } else {
+                        alert('Error al eliminar la deuda.');
+                    }
+                });
             }
-        }
+        });
     });
 });
