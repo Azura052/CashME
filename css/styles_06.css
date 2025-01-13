@@ -1,0 +1,230 @@
+:root{
+    --azul: rgb(30, 27, 209);
+    --azul2: rgba(54, 54, 252, 0.726);
+    --negro: #000000;
+    --gris: #363434;
+    --blanco: #fefefe;
+    --nar1: #9fff87;
+    --nar2: #79df66;
+    --nar3: #54bf46;
+    --nar4: #2ea025;
+    --nar5: #0a6419;
+    --nar6: #13670d;
+    --nar7: #088004;
+    --rojo: rgb(224, 0, 0);
+    --verde: #34cf26;
+    /*segunda paleta de colores*/
+    --orange-50: #9fff87;
+    --orange-100: #79df66;
+    --orange-500: #54bf46;
+    --orange-600: #2ea025;
+    --orange-700: #088004;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+}
+
+body {
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    background-color: var(--nar1);
+    padding: 0rem;
+    line-height: 1.5;
+}
+
+.form-container{
+    margin: 30px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    color: var(--nar1);
+    font-size: 2.5rem;
+}
+
+.sombras:hover{
+    background-color: var(--azul2);
+}
+
+.nav-wrapper {
+    background-color: var(--nar7);
+}
+
+.brand-logo{
+    margin: 0px 30px;
+}
+
+/*LOGIN*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.login-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h1 {
+    color: var(--nar6);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: #666;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--nar1);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--nar3);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--nar3);
+    color: var(--blanco);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: var(--nar4);
+}
+
+.error-message {
+    color: var(--rojo);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: var(--orange-50);
+    border-radius: 4px;
+    display: none;
+}
+
+.error-message.visible {
+    display: block;
+}
+
+.success-message {
+    color: #2e7d32;
+    background-color: #edf7ed;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--nar5);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-image {
+    width: 150px;
+    height: auto;
+}
+
+.footer-contact {
+    color: var(--blanco);
+    text-align: right;
+    font-family: Arial, sans-serif;
+}
+
+.footer-contact p {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+footer p {
+    color: var(--blanco);
+}
+
+.footer-contact a {
+    color: var(--blanco);
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-contact {
+        text-align: center;
+    }
+}
+
+.admin-link{
+    color: var(--blanco);
+}
+
+.admin-link:hover {
+    text-decoration: underline;
+    color: var(--azul2); /* Color al pasar el ratón */
+}
+
+img{
+    background-color: var(--blanco);
+    border-radius: 15px;
+}

@@ -201,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Contáctanos: contactoCashME@gmail.com</p>
             </div>
             <p>&copy; 2024-2025 CashME. Todos los derechos reservados.</p>
-            <p><a href="loginAdmin.php" class="admin-link">¿Eres Administrador?</a></p>
+            <p><a href="admin/loginAdmin.php" class="admin-link">¿Eres Administrador?</a></p>
         </div>
     </footer>
 </body>

@@ -12,23 +12,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Links para aplicar css expecificos para esta pestaña-->
-    <link rel="preload" href="css/styles_05.css" as="style">
-    <link href="css/styles_05.css" rel="stylesheet">
+    <link rel="preload" href="../css/styles_06.css" as="style">
+    <link href="../css/styles_06.css" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-wrapper">
-                <a href="index.html" class="brand-logo">CashME <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1">
+                <a href="../index.html" class="brand-logo">CashME <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1">
                     <path d="M15 11v.01"></path>
                     <path d="M5.173 8.378a3 3 0 1 1 4.656 -1.377"></path>
                     <path d="M16 4v3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342c-.336 .95 -.907 1.8 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3h0z"></path>
                   </svg></a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a class="sombras" href="index.html">Inicio</a></li>
-                <li><a class="sombras" href="registro.php">Registrarse</a></li>
-                <li><a class="sombras" href="loginUsuario.php">   Iniciar Sesión</a></li>
-                </ul>
             </div>
         </nav>
     </header>
@@ -55,7 +50,7 @@
             </div>
         <?php endif; ?>
 
-        <form id="loginForm" action="login_USU.php" method="POST" onsubmit="return validateForm(event)">
+        <form id="loginForm" action="login_AD.php" method="POST" onsubmit="return validateForm(event)">
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
                 <input 
@@ -85,19 +80,18 @@
     </div>
     </section>
 
-    <script src="javascript/script_02.js"></script>
+    <script src="../javascript/script_02.js"></script>
 
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
-                <img src="img/logoEscom.png" alt="Logo de la empresa" class="footer-image">
+                <img src="../img/logoEscom.png" alt="Logo de la empresa" class="footer-image">
             </div>
             <div class="footer-contact">
                 <p>¿Necesitas ayuda?</p>
                 <p>Contáctanos: contactoCashME@gmail.com</p>
             </div>
             <p>&copy; 2024-2025 CashME. Todos los derechos reservados.</p>
-            <p><a href="admin/loginAdmin.php" class="admin-link">¿Eres Administrador?</a></p>
         </div>
     </footer>
 </body>
