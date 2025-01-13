@@ -1,6 +1,7 @@
 :root{
     --azul: rgb(30, 27, 209);
     --azul2: rgba(54, 54, 252, 0.726);
+    --azul3: rgb(51, 165, 180);
     --negro: #000000;
     --gris: #363434;
     --blanco: #fefefe;
@@ -133,7 +134,7 @@ header {
 }
 
 .error-message {
-    color: var(--rojo);
+    color: var(--negro);
     font-size: 0.875rem;
     margin-top: 0.5rem;
     text-align: center;
@@ -155,6 +156,16 @@ header {
     text-align: center;
     margin-bottom: 1rem;
 }
+
+h5.center-align {
+    text-align: left;
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--nar4); 
+    border-bottom: 3px solid var(--nar5); /* Línea decorativa debajo */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
 
 /* Footer */
 .footer {

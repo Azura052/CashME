@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 // Configuración de la base de datos
 $db_host = 'localhost';
 $db_user = 'root';  // Usuario por defecto de XAMPP
@@ -24,36 +24,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         try {
             // Preparar la consulta
-            $stmt = $conn->prepare("SELECT * FROM usuario WHERE usuarioEmail = ? AND usuarioContra = ?");
+            $stmt = $conn->prepare("SELECT * FROM Admin WHERE AdminUser = ? AND AdminContra = ?");
             $stmt->execute([$email, $password]);
             
             // Verificar si existe el usuario
             if ($user = $stmt->fetch()) {
                 // Usuario encontrado - Iniciar sesión
-                $_SESSION['user_id'] = $user['idUsuario'];
-                $_SESSION['user_name'] = $user['usuarioNom'];
-                
-                // Actualizar la fecha de última conexión
-                $fechaRegistro = date('Y-m-d H:i:s');
-                $updateStmt = $conn->prepare("UPDATE usuario SET usuarioSesion = ? WHERE idUsuario = ?");
-                $updateStmt->execute([$fechaRegistro, $user['idUsuario']]);
+                $_SESSION['user_id'] = $user['idAdmin'];
+                $_SESSION['user_name'] = $user['AdminUser'];
                 
                 // Redirigir al dashboard o página principal
-                header("Location: resumen.php");
+                header("Location:CRUD.php");
                 exit();
             } else {
                 // Usuario no encontrado o credenciales incorrectas
                 $error_message = "Correo electrónico o contraseña incorrectos";
             }
-        } catch(PDOException $e) {
-            $error_message = "Error al procesar la solicitud";
+            } catch(PDOException $e) {
+            $error_message = "Error al procesar la solicitud: " . $e->getMessage();
+        }
         }
     }
-}
 
 // Si hay errores, volver al formulario
 if (isset($error_message)) {
-    include 'loginUsuario.php';
+    include 'loginAdmin.php';
     exit();
 }
 ?>
