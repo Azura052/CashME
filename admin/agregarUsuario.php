@@ -80,7 +80,7 @@ $conn->close();
 <body>
     <nav>
         <div class="nav-wrapper">
-            <a href="../cashme/index.html" class="brand-logo">CashME <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1">
+            <a href="CRUD.php" class="brand-logo">CashME <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1">
                 <path d="M15 11v.01"></path>
                 <path d="M5.173 8.378a3 3 0 1 1 4.656 -1.377"></path>
                 <path d="M16 4v3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342c-.336 .95 -.907 1.8 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3h0z"></path>
@@ -93,7 +93,12 @@ $conn->close();
     </nav>
 
     <div class="container">
-        <h5 class="center-align">Editar Usuario</h5>
+        <h5 class="center-align">Agregar Usuario <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="45" height="45" stroke-width="1">
+        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+        <path d="M12 11l0 6"></path>
+        <path d="M9 14l6 0"></path>
+        </svg></h5>
 
         <?php if ($mensaje): ?>
             <p class="center-align white-text"><?= htmlspecialchars($mensaje) ?></p>
@@ -144,7 +149,17 @@ $conn->close();
                     <label for="usuarioDireccionCalle" class="formi">Calle</label>
                     <input type="text" name="usuarioDireccionCalle" id="usuarioDireccionCalle" required>
                 </div>
-                <button type="submit" class="btn">Crear Usuario</button>
+                <button type="submit" class="btn" style="display: flex; align-items: center; justify-content: center;">Crear Usuario <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor">
+                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                <path d="M16 19h6"></path>
+                <path d="M19 16v6"></path>
+                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                </svg></button>
+                <button type="button" class="botoncito" onclick="window.location.href='CRUD.php'" style="display: flex; align-items: center; justify-content: center;">CANCELAR <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1" style="margin-left: 5px;">
+                <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                <path d="M10 8l4 8"></path>
+                <path d="M10 16l4 -8"></path>
+                </svg></button>
             </form>
     </div>
     <br>
