@@ -196,3 +196,11 @@ img{
     background-color: var(--blanco);
     border-radius: 15px;
 }
+
+/*Mensaje*/
+
+p.white-text{
+    color: var(--blanco);
+    font-size: 1.3rem;
+    font-weight: bold;
+}
