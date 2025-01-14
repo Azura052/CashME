@@ -42,26 +42,40 @@
 
 </head>
 <body>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="index.html" class="brand-logo">CashME <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1">
+<nav style="background-color: orange;">
+    <div class="nav-wrapper">
+        <a href="index.html" class="brand-logo" style="padding-left: 15px; color: white;">
+            CashME
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="35" height="35" stroke-width="1" style="vertical-align: middle;">
                 <path d="M15 11v.01"></path>
                 <path d="M5.173 8.378a3 3 0 1 1 4.656 -1.377"></path>
                 <path d="M16 4v3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342c-.336 .95 -.907 1.8 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3h0z"></path>
-              </svg></a>
-              <ul id="nav-mobile" class="right hide-on-med-and-down">
+            </svg>
+        </a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a class="sombras" href="resumen.php">Resumen</a></li>
             <li><a class="sombras" href="ingresos.php">Ingresos</a></li>
             <li><a class="sombras" href="presupuestos.php">Presupuestos</a></li>
             <li><a class="sombras" href="deudas.php">Deudas</a></li>
             <li><a class="sombras" href="inversiones.php">Inversiones</a></li>
             <li><a class="sombras" href="adeudos.php">Adeudos</a></li>
-            <li><a class="sombras" href="analisis.php">Analisis Grafico</a></li>
-            <li><a id="cierre" href="logout.php">   Cerrar Sesión</a></li>
-            </ul>
-        </div>
-    </nav>
+            <li><a class="sombras" href="analisis.php">Análisis Gráfico</a></li>
+            <li><a id="cierre" href="logout.php">Cerrar Sesión</a></li>
+        </ul>
+        <form class="right" style="margin-right: 20px; display: flex; align-items: center;" id="searchForm">
+            <input type="text" id="searchQuery" placeholder="Buscar..." 
+                style="height: 35px; border-radius: 20px; border: none; padding: 0 15px; outline: none; font-size: 16px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);">
+            <button type="button" id="searchButton" style="margin-left: 10px; background-color: white; color: orange; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+        </form>
+    </div>
+</nav>
     
+<div id="content">
     <section id="tabla-resumen">
         <div>
             <div class="texto">
@@ -239,4 +253,39 @@
             </div>
         </footer>
 </body>
+</div>
+<script>
+    document.getElementById('searchButton').addEventListener('click', function() {
+        const query = document.getElementById('searchQuery').value.trim().toLowerCase();
+        const content = document.getElementById('content');
+        const contentHTML = content.innerHTML;
+
+        if (query === '') {
+            alert('Por favor, ingrese un término de búsqueda.');
+            return;
+        }
+
+        // Restaurar contenido original
+        content.innerHTML = contentHTML.replace(/<span class="highlight">(.*?)<\/span>/g, '$1');
+
+        // Buscar y resaltar la palabra clave
+        const regex = new RegExp(`(${query})`, 'gi');
+        let firstMatch = null;
+        content.innerHTML = content.innerHTML.replace(regex, (match) => {
+            if (!firstMatch) {
+                firstMatch = true;
+                return `<span class="highlight" id="firstMatch">${match}</span>`;
+            }
+            return `<span class="highlight">${match}</span>`;
+        });
+
+        // Desplazar hacia la primera coincidencia
+        const firstMatchElement = document.getElementById('firstMatch');
+        if (firstMatchElement) {
+            firstMatchElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert('No se encontraron coincidencias.');
+        }
+    });
+</script>
 </html>
