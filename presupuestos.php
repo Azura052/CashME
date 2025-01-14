@@ -124,66 +124,72 @@
             <h5 class="left-align headings">Presupuestos - Saldo Total: <?php echo $presupuestoSaldo; ?> MXN</h5>
         </div>
         <table class="highlight responsive-table">
-            <?php
-            // Obtener los presupuestos del usuario y ordenarlos por fecha descendente
-            $consulta = "SELECT * FROM presupuesto WHERE usuario_idUsuario = '$usuario_id' ORDER BY PresupuestoFecha DESC";
-            $resultado = mysqli_query($conexion, $consulta);
+    <?php
+    // Obtener los presupuestos del usuario y ordenarlos por fecha descendente
+    $consulta = "SELECT * FROM presupuesto WHERE usuario_idUsuario = '$usuario_id' ORDER BY PresupuestoFecha DESC";
+    $resultado = mysqli_query($conexion, $consulta);
 
-            $presupuestos = [];
-            while ($mostrar = mysqli_fetch_array($resultado)) {
-            $presupuestos[] = $mostrar;
-            }
+    $presupuestos = [];
+    while ($mostrar = mysqli_fetch_array($resultado)) {
+        $presupuestos[] = $mostrar;
+    }
 
-            // Agrupar presupuestos por mes y quincena
-            $presupuestosPorQuincena = [];
+    // Agrupar presupuestos por mes y quincena
+    $presupuestosPorQuincena = [];
 
-            foreach ($presupuestos as $presupuesto) {
-            $fecha = new DateTime($presupuesto['PresupuestoFecha']);
-            $mes = $fecha->format('Y-m'); // Año-Mes
-            $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
+    foreach ($presupuestos as $presupuesto) {
+        $fecha = new DateTime($presupuesto['PresupuestoFecha']);
+        $mes = $fecha->format('Y-m'); // Año-Mes
+        $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
 
-            // Crear una estructura para organizar por mes y quincena
-            if (!isset($presupuestosPorQuincena[$mes])) {
-                $presupuestosPorQuincena[$mes] = [
+        if (!isset($presupuestosPorQuincena[$mes])) {
+            $presupuestosPorQuincena[$mes] = [
                 'Segunda Quincena' => [],
                 'Primera Quincena' => []
-                ];
-            }
+            ];
+        }
 
-            $presupuestosPorQuincena[$mes][$quincena][] = $presupuesto;
-            }
+        $presupuestosPorQuincena[$mes][$quincena][] = $presupuesto;
+    }
 
-            // Mostrar los presupuestos por mes y quincena
-            foreach ($presupuestosPorQuincena as $mes => $quincenas) {
-            foreach ($quincenas as $quincenaNombre => $quincena) {
-                if (!empty($quincena)) {
+    // Mostrar los presupuestos por mes y quincena
+    foreach ($presupuestosPorQuincena as $mes => $quincenas) {
+        foreach ($quincenas as $quincenaNombre => $quincena) {
+            if (!empty($quincena)) {
                 $suma = array_reduce($quincena, function ($carry, $item) {
                     return $carry + $item['PresupuestoMonto'];
                 }, 0);
                 echo "<h5 class='left-align headings1'>Total: $suma MXN</h5>";
                 echo "<table class='highlight responsive-table'>";
                 echo "<tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                    <td><b>Tipo de presupuesto</b></td>
+                        <td><b>Descripción</b></td>
+                        <td><b>Monto (MXN)</b></td>
+                        <td><b>Fecha</b></td>
+                        <td><b>Tipo de presupuesto</b></td>
+                        <td><b>Acción</b></td>
                     </tr>";
 
                 foreach ($quincena as $presupuesto) {
                     echo "<tr>
-                        <td>{$presupuesto['PresupuestoDesc']}</td>
-                        <td>{$presupuesto['PresupuestoMonto']}</td>
-                        <td>{$presupuesto['PresupuestoFecha']}</td>
-                        <td>{$presupuesto['PresupuestoTipo']}</td>
-                    </tr>";
+                            <td>{$presupuesto['PresupuestoDesc']}</td>
+                            <td>{$presupuesto['PresupuestoMonto']}</td>
+                            <td>{$presupuesto['PresupuestoFecha']}</td>
+                            <td>{$presupuesto['PresupuestoTipo']}</td>
+                            <td>
+                                <form method='POST' action='eliminar_presupuesto.php' style='display:inline;'>
+                                    <input type='hidden' name='idPresupuesto' value='{$presupuesto['idPresupuesto']}'>
+                                    <button type='submit' class='btn red'>Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>";
                 }
 
                 echo "</table><br>";
-                }
             }
-            }
-            ?>
-        </table>
+        }
+    }
+    ?>
+</table>
         </div>
     </section>
 

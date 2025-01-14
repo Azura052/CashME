@@ -119,64 +119,71 @@
             <h5 class="left-align headings">Ingresos - Saldo Total: <?php echo $ingresoSaldo; ?> MXN</h5>
         </div>
         <table class="highlight responsive-table">
-            <?php
-            // Obtener los ingresos del usuario y ordenarlos por fecha descendente
-            $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id' ORDER BY IngresoFecha DESC";
-            $resultado = mysqli_query($conexion, $consulta);
+    <?php
+    // Obtener los ingresos del usuario y ordenarlos por fecha descendente
+    $consulta = "SELECT * FROM ingreso WHERE usuario_idUsuario = '$usuario_id' ORDER BY IngresoFecha DESC";
+    $resultado = mysqli_query($conexion, $consulta);
 
-            $ingresos = [];
-            while ($mostrar = mysqli_fetch_array($resultado)) {
-                $ingresos[] = $mostrar;
-            }
+    $ingresos = [];
+    while ($mostrar = mysqli_fetch_array($resultado)) {
+        $ingresos[] = $mostrar;
+    }
 
-            // Agrupar ingresos por mes y quincena
-            $ingresosPorQuincena = [];
+    // Agrupar ingresos por mes y quincena
+    $ingresosPorQuincena = [];
 
-            foreach ($ingresos as $ingreso) {
-                $fecha = new DateTime($ingreso['IngresoFecha']);
-                $mes = $fecha->format('Y-m'); // Año-Mes
-                $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
+    foreach ($ingresos as $ingreso) {
+        $fecha = new DateTime($ingreso['IngresoFecha']);
+        $mes = $fecha->format('Y-m'); // Año-Mes
+        $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
 
-                // Crear una estructura para organizar por mes y quincena
-                if (!isset($ingresosPorQuincena[$mes])) {
-                    $ingresosPorQuincena[$mes] = [
-                        'Segunda Quincena' => [],
-                        'Primera Quincena' => []
-                    ];
+        if (!isset($ingresosPorQuincena[$mes])) {
+            $ingresosPorQuincena[$mes] = [
+                'Segunda Quincena' => [],
+                'Primera Quincena' => []
+            ];
+        }
+
+        $ingresosPorQuincena[$mes][$quincena][] = $ingreso;
+    }
+
+    // Mostrar los ingresos por mes y quincena
+    foreach ($ingresosPorQuincena as $mes => $quincenas) {
+        foreach ($quincenas as $quincenaNombre => $quincena) {
+            if (!empty($quincena)) {
+                $suma = array_reduce($quincena, function ($carry, $item) {
+                    return $carry + $item['IngresoMonto'];
+                }, 0);
+                echo "<h5 class='left-align headings1'>Total: $suma MXN</h5>";
+                echo "<table class='highlight responsive-table'>";
+                echo "<tr>
+                        <td><b>Descripción</b></td>
+                        <td><b>Monto (MXN)</b></td>
+                        <td><b>Fecha</b></td>
+                        <td><b>Acción</b></td>
+                    </tr>";
+
+                foreach ($quincena as $ingreso) {
+                    echo "<tr>
+                            <td>{$ingreso['IngresoDesc']}</td>
+                            <td>{$ingreso['IngresoMonto']}</td>
+                            <td>{$ingreso['IngresoFecha']}</td>
+                            <td>
+                                <form method='POST' action='eliminar_registro.php' style='display:inline;'>
+                                    <input type='hidden' name='idIngreso' value='{$ingreso['idIngreso']}'>
+                                    <button type='submit' class='btn red'>Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>";
                 }
 
-                $ingresosPorQuincena[$mes][$quincena][] = $ingreso;
+                echo "</table><br>";
             }
+        }
+    }
+    ?>
+</table>
 
-            // Mostrar los ingresos por mes y quincena
-            foreach ($ingresosPorQuincena as $mes => $quincenas) {
-                foreach ($quincenas as $quincenaNombre => $quincena) {
-                    if (!empty($quincena)) {
-                        $suma = array_reduce($quincena, function ($carry, $item) {
-                            return $carry + $item['IngresoMonto'];
-                        }, 0);
-                        echo "<h5 class='left-align headings1'>Total: $suma MXN</h5>";
-                        echo "<table class='highlight responsive-table'>";
-                        echo "<tr>
-                                <td><b>Descripción</b></td>
-                                <td><b>Monto (MXN)</b></td>
-                                <td><b>Fecha</b></td>
-                            </tr>";
-
-                        foreach ($quincena as $ingreso) {
-                            echo "<tr>
-                                    <td>{$ingreso['IngresoDesc']}</td>
-                                    <td>{$ingreso['IngresoMonto']}</td>
-                                    <td>{$ingreso['IngresoFecha']}</td>
-                                </tr>";
-                        }
-
-                        echo "</table><br>";
-                    }
-                }
-            }
-            ?>
-        </table>
 
         </div>
     </section>

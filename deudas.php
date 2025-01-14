@@ -117,66 +117,73 @@
             <h5 class="left-align headings">Deudas - Saldo Total: <?php echo $deudaSaldo; ?> MXN</h5>
         </div>
         <table class="highlight responsive-table">
-            <?php
-            // Obtener las deudas del usuario y ordenarlas por fecha descendente
-            $consulta = "SELECT * FROM deuda WHERE usuario_idUsuario = '$usuario_id' ORDER BY DeudaFecha DESC";
-            $resultado = mysqli_query($conexion, $consulta);
+    <?php
+    // Obtener las deudas del usuario y ordenarlas por fecha descendente
+    $consulta = "SELECT * FROM deuda WHERE usuario_idUsuario = '$usuario_id' ORDER BY DeudaFecha DESC";
+    $resultado = mysqli_query($conexion, $consulta);
 
-            $deudas = [];
-            while ($mostrar = mysqli_fetch_array($resultado)) {
-            $deudas[] = $mostrar;
-            }
+    $deudas = [];
+    while ($mostrar = mysqli_fetch_array($resultado)) {
+        $deudas[] = $mostrar;
+    }
 
-            // Agrupar deudas por mes y quincena
-            $deudasPorQuincena = [];
+    // Agrupar deudas por mes y quincena
+    $deudasPorQuincena = [];
 
-            foreach ($deudas as $deuda) {
-            $fecha = new DateTime($deuda['DeudaFecha']);
-            $mes = $fecha->format('Y-m'); // Año-Mes
-            $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
+    foreach ($deudas as $deuda) {
+        $fecha = new DateTime($deuda['DeudaFecha']);
+        $mes = $fecha->format('Y-m'); // Año-Mes
+        $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
 
-            // Crear una estructura para organizar por mes y quincena
-            if (!isset($deudasPorQuincena[$mes])) {
-                $deudasPorQuincena[$mes] = [
+        if (!isset($deudasPorQuincena[$mes])) {
+            $deudasPorQuincena[$mes] = [
                 'Segunda Quincena' => [],
                 'Primera Quincena' => []
-                ];
-            }
+            ];
+        }
 
-            $deudasPorQuincena[$mes][$quincena][] = $deuda;
-            }
+        $deudasPorQuincena[$mes][$quincena][] = $deuda;
+    }
 
-            // Mostrar las deudas por mes y quincena
-            foreach ($deudasPorQuincena as $mes => $quincenas) {
-            foreach ($quincenas as $quincenaNombre => $quincena) {
-                if (!empty($quincena)) {
+    // Mostrar las deudas por mes y quincena
+    foreach ($deudasPorQuincena as $mes => $quincenas) {
+        foreach ($quincenas as $quincenaNombre => $quincena) {
+            if (!empty($quincena)) {
                 $suma = array_reduce($quincena, function ($carry, $item) {
                     return $carry + $item['DeudaMonto'];
                 }, 0);
                 echo "<h5 class='left-align headings1'>Total: $suma MXN</h5>";
                 echo "<table class='highlight responsive-table'>";
                 echo "<tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                    <td><b>Entidad acreedora</b></td>
+                        <td><b>Descripción</b></td>
+                        <td><b>Monto (MXN)</b></td>
+                        <td><b>Fecha</b></td>
+                        <td><b>Entidad acreedora</b></td>
+                        <td><b>Acción</b></td>
                     </tr>";
 
                 foreach ($quincena as $deuda) {
                     echo "<tr>
-                        <td>{$deuda['DeudaDesc']}</td>
-                        <td>{$deuda['DeudaMonto']}</td>
-                        <td>{$deuda['DeudaFecha']}</td>
-                        <td>{$deuda['DeudaCobro']}</td>
-                    </tr>";
+                            <td>{$deuda['DeudaDesc']}</td>
+                            <td>{$deuda['DeudaMonto']}</td>
+                            <td>{$deuda['DeudaFecha']}</td>
+                            <td>{$deuda['DeudaCobro']}</td>
+                            <td>
+                                <form method='POST' action='eliminar_deuda.php' style='display:inline;'>
+                                    <input type='hidden' name='idDeuda' value='{$deuda['idDeuda']}'>
+                                    <button type='submit' class='btn red'>Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>";
                 }
 
                 echo "</table><br>";
-                }
             }
-            }
-            ?>
-        </table>
+        }
+    }
+    ?>
+</table>
+
         </div>
     </section>
 

@@ -117,71 +117,78 @@
             <h5 class="left-align headings">Inversiones - Saldo Total: <?php echo $inversionSaldo; ?> MXN</h5>
         </div>
         <table class="highlight responsive-table">
-            <?php
-            // Obtener las inversiones del usuario y ordenarlas por fecha descendente
-            $consulta = "SELECT * FROM inversion WHERE usuario_idUsuario = '$usuario_id' ORDER BY InversionFecha DESC";
-            $resultado = mysqli_query($conexion, $consulta);
+    <?php
+    // Obtener las inversiones del usuario y ordenarlas por fecha descendente
+    $consulta = "SELECT * FROM inversion WHERE usuario_idUsuario = '$usuario_id' ORDER BY InversionFecha DESC";
+    $resultado = mysqli_query($conexion, $consulta);
 
-            $inversiones = [];
-            while ($mostrar = mysqli_fetch_array($resultado)) {
-            $inversiones[] = $mostrar;
-            }
+    $inversiones = [];
+    while ($mostrar = mysqli_fetch_array($resultado)) {
+        $inversiones[] = $mostrar;
+    }
 
-            // Agrupar inversiones por mes y quincena
-            $inversionesPorQuincena = [];
+    // Agrupar inversiones por mes y quincena
+    $inversionesPorQuincena = [];
 
-            foreach ($inversiones as $inversion) {
-            $fecha = new DateTime($inversion['InversionFecha']);
-            $mes = $fecha->format('Y-m'); // Año-Mes
-            $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
+    foreach ($inversiones as $inversion) {
+        $fecha = new DateTime($inversion['InversionFecha']);
+        $mes = $fecha->format('Y-m'); // Año-Mes
+        $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
 
-            // Crear una estructura para organizar por mes y quincena
-            if (!isset($inversionesPorQuincena[$mes])) {
-                $inversionesPorQuincena[$mes] = [
+        if (!isset($inversionesPorQuincena[$mes])) {
+            $inversionesPorQuincena[$mes] = [
                 'Segunda Quincena' => [],
                 'Primera Quincena' => []
-                ];
-            }
+            ];
+        }
 
-            $inversionesPorQuincena[$mes][$quincena][] = $inversion;
-            }
+        $inversionesPorQuincena[$mes][$quincena][] = $inversion;
+    }
 
-            // Mostrar las inversiones por mes y quincena
-            foreach ($inversionesPorQuincena as $mes => $quincenas) {
-            foreach ($quincenas as $quincenaNombre => $quincena) {
-                if (!empty($quincena)) {
-                    $suma_periodo = array_reduce($quincena, function($carry, $item) {
-                        return $carry + $item['InversionMonto'];
-                    }, 0);
-                    $suma_rendimiento = array_reduce($quincena, function($carry, $item) {
-                        return $carry + $item['InversionRen'];
-                    }, 0);
+    // Mostrar las inversiones por mes y quincena
+    foreach ($inversionesPorQuincena as $mes => $quincenas) {
+        foreach ($quincenas as $quincenaNombre => $quincena) {
+            if (!empty($quincena)) {
+                $suma_periodo = array_reduce($quincena, function ($carry, $item) {
+                    return $carry + $item['InversionMonto'];
+                }, 0);
+                $suma_rendimiento = array_reduce($quincena, function ($carry, $item) {
+                    return $carry + $item['InversionRen'];
+                }, 0);
                 echo "<h5 class='left-align headings1'>Total Invertido: $suma_periodo MXN / Rendimiento Esperado Total: $suma_rendimiento MXN</h5>";
                 echo "<table class='highlight responsive-table'>";
                 echo "<tr>
-                    <td><b>Descripción</b></td>
-                    <td><b>Monto (MXN)</b></td>
-                    <td><b>Fecha</b></td>
-                    <td><b>Porcentaje de rendimiento</b></td>
-                    <td><b>Rendimiento esperado MXN</b></td>
+                        <td><b>Descripción</b></td>
+                        <td><b>Monto (MXN)</b></td>
+                        <td><b>Fecha</b></td>
+                        <td><b>Porcentaje de rendimiento</b></td>
+                        <td><b>Rendimiento esperado MXN</b></td>
+                        <td><b>Acción</b></td>
                     </tr>";
 
                 foreach ($quincena as $inversion) {
                     echo "<tr>
-                        <td>{$inversion['InversionDesc']}</td>
-                        <td>{$inversion['InversionMonto']}</td>
-                        <td>{$inversion['InversionFecha']}</td>
-                        <td>{$inversion['InversionPor']}</td>
-                        <td>{$inversion['InversionRen']}</td>
-                    </tr>";
+                            <td>{$inversion['InversionDesc']}</td>
+                            <td>{$inversion['InversionMonto']}</td>
+                            <td>{$inversion['InversionFecha']}</td>
+                            <td>{$inversion['InversionPor']}</td>
+                            <td>{$inversion['InversionRen']}</td>
+                            <td>
+                                <form method='POST' action='eliminar_inversion.php' style='display:inline;'>
+                                    <input type='hidden' name='idInversion' value='{$inversion['idInversion']}'>
+                                    <button type='submit' class='btn red'>Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>";
                 }
 
                 echo "</table><br>";
-                }
             }
-            }
-            ?>
-        </table>
+        }
+    }
+    ?>
+</table>
+
         </div>
     </section>
 

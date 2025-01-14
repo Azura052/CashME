@@ -120,67 +120,74 @@
             <h5 class="left-align headings">Adeudos - Saldo Total: <?php echo $adeudoSaldo; ?> MXN</h5>
         </div>
         <table class="highlight responsive-table">
-            <?php
-            // Obtener los adeudos del usuario y ordenarlos por fecha descendente
-            $consulta = "SELECT * FROM adeudo WHERE usuario_idUsuario = '$usuario_id' ORDER BY AdeudoFecha DESC";
-            $resultado = mysqli_query($conexion, $consulta);
+    <?php
+    // Obtener los adeudos del usuario y ordenarlos por fecha descendente
+    $consulta = "SELECT * FROM adeudo WHERE usuario_idUsuario = '$usuario_id' ORDER BY AdeudoFecha DESC";
+    $resultado = mysqli_query($conexion, $consulta);
 
-            $adeudos = [];
-            while ($mostrar = mysqli_fetch_array($resultado)) {
-            $adeudos[] = $mostrar;
-            }
+    $adeudos = [];
+    while ($mostrar = mysqli_fetch_array($resultado)) {
+        $adeudos[] = $mostrar;
+    }
 
-            // Agrupar adeudos por mes y quincena
-            $adeudosPorQuincena = [];
+    // Agrupar adeudos por mes y quincena
+    $adeudosPorQuincena = [];
 
-            foreach ($adeudos as $adeudo) {
-            $fecha = new DateTime($adeudo['AdeudoFecha']);
-            $mes = $fecha->format('Y-m'); // Año-Mes
-            $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
+    foreach ($adeudos as $adeudo) {
+        $fecha = new DateTime($adeudo['AdeudoFecha']);
+        $mes = $fecha->format('Y-m'); // Año-Mes
+        $quincena = $fecha->format('d') <= 15 ? 'Primera Quincena' : 'Segunda Quincena';
 
-            // Crear una estructura para organizar por mes y quincena
-            if (!isset($adeudosPorQuincena[$mes])) {
+        if (!isset($adeudosPorQuincena[$mes])) {
             $adeudosPorQuincena[$mes] = [
-            'Segunda Quincena' => [],
-            'Primera Quincena' => []
+                'Segunda Quincena' => [],
+                'Primera Quincena' => []
             ];
-            }
+        }
 
-            $adeudosPorQuincena[$mes][$quincena][] = $adeudo;
-            }
+        $adeudosPorQuincena[$mes][$quincena][] = $adeudo;
+    }
 
-            // Mostrar los adeudos por mes y quincena
-            foreach ($adeudosPorQuincena as $mes => $quincenas) {
-            foreach ($quincenas as $quincenaNombre => $quincena) {
+    // Mostrar los adeudos por mes y quincena
+    foreach ($adeudosPorQuincena as $mes => $quincenas) {
+        foreach ($quincenas as $quincenaNombre => $quincena) {
             if (!empty($quincena)) {
-            $suma = array_reduce($quincena, function ($carry, $item) {
-                return $carry + $item['AdeudoMonto'];
-            }, 0);
-            echo "<h5 class='left-align headings1'>Total: $suma MXN</h5>";
-            echo "<table class='highlight responsive-table'>";
-            echo "<tr>
-                <td><b>Descripción</b></td>
-                <td><b>Monto (MXN)</b></td>
-                <td><b>Fecha</b></td>
-                <td><b>Entidad acreedora</b></td>
-                </tr>";
+                $suma = array_reduce($quincena, function ($carry, $item) {
+                    return $carry + $item['AdeudoMonto'];
+                }, 0);
+                echo "<h5 class='left-align headings1'>Total: $suma MXN</h5>";
+                echo "<table class='highlight responsive-table'>";
+                echo "<tr>
+                        <td><b>Descripción</b></td>
+                        <td><b>Monto (MXN)</b></td>
+                        <td><b>Fecha</b></td>
+                        <td><b>Entidad acreedora</b></td>
+                        <td><b>Acción</b></td>
+                    </tr>";
 
-            foreach ($quincena as $adeudo) {
-                $estado_color = $adeudo['AdeudoEstado'] == 'Pagado' ? 'green-text' : 'red-text';
-                echo "<tr class='{$estado_color}'>
-                <td>{$adeudo['AdeudoDesc']}</td>
-                <td>{$adeudo['AdeudoMonto']}</td>
-                <td>{$adeudo['AdeudoFecha']}</td>
-                <td>{$adeudo['AdeudoCobro']}</td>
-                </tr>";
-            }
+                foreach ($quincena as $adeudo) {
+                    $estado_color = $adeudo['AdeudoEstado'] == 'Pagado' ? 'green-text' : 'red-text';
+                    echo "<tr class='{$estado_color}'>
+                            <td>{$adeudo['AdeudoDesc']}</td>
+                            <td>{$adeudo['AdeudoMonto']}</td>
+                            <td>{$adeudo['AdeudoFecha']}</td>
+                            <td>{$adeudo['AdeudoCobro']}</td>
+                            <td>
+                                <form method='POST' action='eliminar_adeudo.php' style='display:inline;'>
+                                    <input type='hidden' name='idAdeudo' value='{$adeudo['idAdeudo']}'>
+                                    <button type='submit' class='btn red'>Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>";
+                }
 
-            echo "</table><br>";
+                echo "</table><br>";
             }
-            }
-            }
-            ?>
-        </table>
+        }
+    }
+    ?>
+</table>
+
         </div>
     </section>
 
