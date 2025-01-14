@@ -232,10 +232,78 @@ footer p {
 
 .admin-link:hover {
     text-decoration: underline;
-    color: var(--azul2); /* Color al pasar el ratón */
+    color: var(--azul2); 
 }
 
 img{
     background-color: var(--blanco);
     border-radius: 15px;
+}
+
+/* Estilo de la barra de búsqueda */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--blanco);
+    border: 2px solid var(--nar4);
+    border-radius: 25px;
+    padding: 1px 30px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 5px 10px;
+    font-size: 16px;
+    color: var(--negro);
+}
+
+.search-bar button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.search-bar .search-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/*Diseño formulario*/
+
+/* Diseños generales de la clase diseñito */
+.diseñito {
+    border: 2px solid green;
+    border-radius: 15px;
+    padding: 20px;
+    background-color: white;
+    color: green;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo de los inputs y labels */
+.diseñito input[type="text"],
+.diseñito input[type="email"],
+.diseñito label {
+    color: green;
+}
+
+/* Botones dentro de diseñito */
+.diseñito button {
+    background-color: green;
+    color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.diseñito button:hover {
+    background-color: darkgreen;
 }
