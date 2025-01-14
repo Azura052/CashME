@@ -102,10 +102,11 @@
             <li><a class="sombras" href="analisis.php" style="color: white;">Análisis Gráfico</a></li>
             <li><a id="cierre" href="logout.php" style="color: white;">Cerrar Sesión</a></li>
         </ul>
-        <form class="right" style="margin-right: 20px; display: flex; align-items: center;">
-            <input type="text" placeholder="Buscar..." 
+<!--BARRA DE BUSQUEDA EN EL MENU-->
+        <form class="right" style="margin-right: 20px; display: flex; align-items: center;" id="searchForm">
+            <input type="text" id="searchQuery" placeholder="Buscar..." 
                 style="height: 35px; border-radius: 20px; border: none; padding: 0 15px; outline: none; font-size: 16px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);">
-            <button type="submit" style="margin-left: 10px; background-color: white; color: orange; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.2); cursor: pointer;">
+            <button type="button" id="searchButton" style="margin-left: 10px; background-color: white; color: orange; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); cursor: pointer;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -114,7 +115,9 @@
         </form>
     </div>
 </nav>
- 
+
+
+<div id="content">
     <section id="tabla-resumen">
         <div>
         <br> 
@@ -412,6 +415,42 @@
             <p>&copy; 2024-2025 CashME. Todos los derechos reservados.</p> 
         </div>
     </footer>
-</body>
-</html>
+    </body>
+</div>
+        <!--BARRA DE BUSQUEDA JS-->
+<script>
+    document.getElementById('searchButton').addEventListener('click', function() {
+        const query = document.getElementById('searchQuery').value.trim().toLowerCase();
+        const content = document.getElementById('content');
+        const contentHTML = content.innerHTML;
 
+        if (query === '') {
+            alert('Por favor, ingrese un término de búsqueda.');
+            return;
+        }
+
+        // Restaurar contenido original
+        content.innerHTML = contentHTML.replace(/<span class="highlight">(.*?)<\/span>/g, '$1');
+
+        // Buscar y resaltar la palabra clave
+        const regex = new RegExp(`(${query})`, 'gi');
+        let firstMatch = null;
+        content.innerHTML = content.innerHTML.replace(regex, (match) => {
+            if (!firstMatch) {
+                firstMatch = true;
+                return `<span class="highlight" id="firstMatch">${match}</span>`;
+            }
+            return `<span class="highlight">${match}</span>`;
+        });
+
+        // Desplazar hacia la primera coincidencia
+        const firstMatchElement = document.getElementById('firstMatch');
+        if (firstMatchElement) {
+            firstMatchElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert('No se encontraron coincidencias.');
+        }
+    });
+</script>
+
+</html>
