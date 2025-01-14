@@ -58,9 +58,14 @@ if (isset($_GET['eliminar']) && isset($_GET['id'])) {
     }
 }
 
-// Consulta para obtener los datos de los usuarios
-$sql = "SELECT idUsuario, usuarioNom, usuarioApePat, usuarioApeMat, usuarioTel, usuarioEmail, usuarioSesion FROM usuario";
-$result = $conn->query($sql);
+    // Consulta para obtener los datos de los usuarios
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $sql = "SELECT idUsuario, usuarioNom, usuarioApePat, usuarioApeMat, usuarioTel, usuarioEmail, usuarioSesion FROM usuario WHERE usuarioNom LIKE ? OR usuarioApePat LIKE ? OR usuarioApeMat LIKE ? OR usuarioEmail LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $searchParam = '%' . $search . '%';
+    $stmt->bind_param("ssss", $searchParam, $searchParam, $searchParam, $searchParam);
+    $stmt->execute();
+    $result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -89,6 +94,15 @@ $result = $conn->query($sql);
 
     <div class="container" style="width: 100%;">
         <h5 class="center-align">Lista de Usuarios</h5>
+
+        <!-- Barra de búsqueda -->
+        <form method="GET" action="CRUD.php">
+            <div class="input-field">
+                <input type="text" id="search" name="search" value="<?= htmlspecialchars($search) ?>">
+                <label for="search">Buscar por nombre</label>
+                <button type="submit" class="btn">Buscar</button>
+            </div>
+        </form>
 
         <!-- Mostrar mensaje si existe -->
         <?php if (isset($mensaje)): ?>
@@ -133,8 +147,10 @@ $result = $conn->query($sql);
             </tbody>
         </table>
     </div>
-
-    <footer class="footer" style="position: fixed; bottom: 0; width: 100%;">
+    <br>
+    <br>
+    <br>
+    <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">
                 <img src="../img/logoEscom.png" alt="Logo de la empresa" class="footer-image">

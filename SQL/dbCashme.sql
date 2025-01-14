@@ -173,7 +173,7 @@ INSERT INTO `dbCashme`.`usuario` (`usuarioNom`, `usuarioApePat`, `usuarioApeMat`
 VALUES 
 ('Juan', 'Pérez', 'Gómez', '1234567890', 'juan.perez@example.com', 'contra123', '2025-01-01'),
 ('Ana', 'López', 'Martínez', '0987654321', 'ana.lopez@example.com', 'contra123', '2025-01-01'),
-('Carlos', 'Hernández', 'Sánchez', '1122334455', 'carlos.hernandez@example.com', 'contra123', '2025-01-01');
+('Carlos', 'Hernández', 'Sánchez', '1122334455', 'carlos.hernandez@example.com', 'contra123', '2025-01-01'),
 ('Luis', 'Ramírez', 'Flores', '5678901234', 'luis.ramirez@example.com', 'contra123', '2025-01-01'),
 ('María', 'García', 'Núñez', '6789012345', 'maria.garcia@example.com', 'contra123', '2025-01-01'),
 ('Pedro', 'Mendoza', 'Torres', '7890123456', 'pedro.mendoza@example.com', 'contra123', '2025-01-01'),
@@ -188,7 +188,7 @@ INSERT INTO `dbCashme`.`usuarioDir` (`usuarioDireccionEstado`, `usuarioDireccion
 VALUES 
 ('Estado1', '10000', 'Colonia1', 'Calle1', 1),
 ('Estado2', '20000', 'Colonia2', 'Calle2', 2),
-('Estado3', '30000', 'Colonia3', 'Calle3', 3);
+('Estado3', '30000', 'Colonia3', 'Calle3', 3),
 ('Estado4', '40000', 'Colonia4', 'Calle4', 4),
 ('Estado5', '50000', 'Colonia5', 'Calle5', 5),
 ('Estado6', '60000', 'Colonia6', 'Calle6', 6),
